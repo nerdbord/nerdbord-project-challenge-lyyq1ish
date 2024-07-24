@@ -14,7 +14,7 @@ export async function uploadReceipt(image: string): Promise<string> {
     const host =
       process.env.NODE_ENV === 'production'
         ? process.env.URL || process.env.DEPLOY_URL
-        : 'localhost:3001'
+        : 'localhost:3000'
 
     return `${protocol}://${host}/api/receipts/${receipt.id}`
   } catch (error) {
