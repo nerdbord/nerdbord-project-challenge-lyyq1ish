@@ -1,7 +1,7 @@
 'use server'
 
-import { User } from '@prisma/client'
 import { prisma } from '../../lib/prisma'
+import { User } from '@prisma/client'
 
 export type CreateUserPayload = Omit<User, 'id' | 'createdAt' | 'updatedAt'>
 

@@ -5,15 +5,14 @@ export default async function Home() {
   const users = await getUsers()
 
   return (
-    <main>
-      <h1>User Management</h1>
-      <CreateUserForm />
-      <h2>Existing Users</h2>
+    <main className="main">
+      <h2>istniejący userzy:</h2>
       <ul>
         {users.map((user) => (
           <li key={user.id}>{user.email}</li>
         ))}
       </ul>
+      <CreateUserForm />
     </main>
   )
 }

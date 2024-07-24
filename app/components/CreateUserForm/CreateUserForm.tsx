@@ -3,12 +3,14 @@
 import { useState } from 'react'
 import styles from './CreateUserForm.module.scss'
 import { createUser, CreateUserPayload } from '@/app/actions/userActions'
+import { analyzeReceipt } from '@/app/actions/receiptActions'
 
 export default function CreateUserForm() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [message, setMessage] = useState('')
   const [isError, setIsError] = useState(false)
+  const [result, setResult] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -24,6 +26,16 @@ export default function CreateUserForm() {
     } catch (error) {
       setMessage('Failed to create user')
       setIsError(true)
+    }
+  }
+
+  const handleImageUpload = async () => {
+    try {
+      const analysisResult = await analyzeReceipt()
+      setResult(analysisResult)
+    } catch (error) {
+      console.error('Failed to analyze image:', error)
+      setResult('Failed to analyze image')
     }
   }
 
@@ -62,6 +74,35 @@ export default function CreateUserForm() {
           {message}
         </div>
       )}
+      <div className={styles.cameraContainer}>
+        <h2>
+          na to wyżej nie zwracaj uwagi w sumie, tylko sprawdzałem tworzenie
+          userów. a tutaj niżej jest button do wysłania tego paragonu co widać
+          na obrazku. póki co zahardkodowałem stringa tego paragonu. jeszcze nie
+          ma opcji wysyłania zdjęć z kamery. Także kliknij tylko na "analizuj
+          bez wybierania obrazka"
+        </h2>
+        <img
+          src="https://img12.dmty.pl//uploads/202112/1640607424_mqpjih_600.jpg"
+          alt="Paragon"
+          className={styles.receiptImage}
+        />
+        <input
+          type="file"
+          accept="image/*"
+          capture="environment"
+          className={styles.cameraInput}
+        />
+        <button onClick={handleImageUpload} className={styles.submitButton}>
+          ANALIZUJ PARAGON
+        </button>
+        {result && (
+          <div className={styles.result}>
+            <h3>WYNIK ANALIZY:</h3>
+            <p>{result}</p>
+          </div>
+        )}
+      </div>
     </div>
   )
 }
