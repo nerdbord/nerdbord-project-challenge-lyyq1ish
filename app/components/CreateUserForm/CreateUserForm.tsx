@@ -4,6 +4,7 @@ import { useState } from 'react'
 import styles from './CreateUserForm.module.scss'
 import { createUser, CreateUserPayload } from '@/app/actions/userActions'
 import { analyzeReceipt } from '@/app/actions/receiptActions'
+import Image from 'next/image'
 
 export default function CreateUserForm() {
   const [email, setEmail] = useState('')
@@ -79,19 +80,13 @@ export default function CreateUserForm() {
           na to wyżej nie zwracaj uwagi w sumie, tylko sprawdzałem tworzenie
           userów. a tutaj niżej jest button do wysłania tego paragonu co widać
           na obrazku. póki co zahardkodowałem stringa tego paragonu. jeszcze nie
-          ma opcji wysyłania zdjęć z kamery. Także kliknij tylko na "analizuj
-          bez wybierania obrazka"
+          ma opcji wysyłania zdjęć z kamery.
         </h2>
-        <img
+        <Image
           src="https://img12.dmty.pl//uploads/202112/1640607424_mqpjih_600.jpg"
-          alt="Paragon"
-          className={styles.receiptImage}
-        />
-        <input
-          type="file"
-          accept="image/*"
-          capture="environment"
-          className={styles.cameraInput}
+          alt="Sample receipt"
+          width={600}
+          height={400}
         />
         <button onClick={handleImageUpload} className={styles.submitButton}>
           ANALIZUJ PARAGON
