@@ -3,8 +3,7 @@
 import { useState } from 'react'
 import styles from './CreateUserForm.module.scss'
 import { createUser, CreateUserPayload } from '@/app/actions/userActions'
-import { analyzeReceipt } from '@/app/actions/receiptActions'
-import Image from 'next/image'
+import { analyzeReceipt, uploadReceipt } from '@/app/actions/receiptActions'
 
 export default function CreateUserForm() {
   const [email, setEmail] = useState('')
@@ -12,6 +11,8 @@ export default function CreateUserForm() {
   const [message, setMessage] = useState('')
   const [isError, setIsError] = useState(false)
   const [result, setResult] = useState('')
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [preview, setPreview] = useState<string | null>(null)
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -30,14 +31,42 @@ export default function CreateUserForm() {
     }
   }
 
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const file = e.target.files[0]
+      setSelectedFile(file)
+      const reader = new FileReader()
+      reader.onloadend = () => {
+        setPreview(reader.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
   const handleImageUpload = async () => {
+    if (!selectedFile) {
+      setResult('Please select a file first.')
+      return
+    }
+
     try {
-      const analysisResult = await analyzeReceipt()
+      const base64String = await toBase64(selectedFile)
+      const receiptId = await uploadReceipt(base64String)
+      const analysisResult = await analyzeReceipt(receiptId)
       setResult(analysisResult)
     } catch (error) {
       console.error('Failed to analyze image:', error)
       setResult('Failed to analyze image')
     }
+  }
+
+  const toBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader()
+      reader.readAsDataURL(file)
+      reader.onload = () => resolve(reader.result as string)
+      reader.onerror = (error) => reject(error)
+    })
   }
 
   return (
@@ -76,20 +105,12 @@ export default function CreateUserForm() {
         </div>
       )}
       <div className={styles.cameraContainer}>
-        <h2>
-          na to wyżej nie zwracaj uwagi w sumie, tylko sprawdzałem tworzenie
-          userów. a tutaj niżej jest button do wysłania tego paragonu co widać
-          na obrazku. póki co zahardkodowałem stringa tego paragonu. jeszcze nie
-          ma opcji wysyłania zdjęć z kamery.
-        </h2>
-        <Image
-          src="https://img12.dmty.pl//uploads/202112/1640607424_mqpjih_600.jpg"
-          alt="Sample receipt"
-          width={600}
-          height={400}
-        />
+        <input type="file" accept="image/*" onChange={handleImageChange} />
+        {preview && (
+          <img src={preview} alt="Preview" className={styles.preview} />
+        )}
         <button onClick={handleImageUpload} className={styles.submitButton}>
-          ANALIZUJ PARAGON
+          WYŚLIJ I ANALIZUJ PARAGON
         </button>
         {result && (
           <div className={styles.result}>

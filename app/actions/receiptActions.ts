@@ -1,33 +1,40 @@
+// app/actions/receiptActions.ts
 'use server'
 
 import { prisma } from '../../lib/prisma'
 
-export async function uploadReceipt(image: string): Promise<string> {
+export async function uploadReceipt(base64String: string): Promise<string> {
   try {
+    console.log('Base64 String:', base64String)
+
     const receipt = await prisma.receipt.create({
       data: {
-        image,
+        image: base64String,
       },
     })
 
-    const protocol = process.env.NODE_ENV === 'production' ? 'https' : 'http'
-    const host =
-      process.env.NODE_ENV === 'production'
-        ? process.env.URL || process.env.DEPLOY_URL
-        : 'localhost:3001'
-
-    return `${protocol}://${host}/api/receipts/${receipt.id}`
+    console.log('Receipt stored with ID:', receipt.id)
+    return receipt.id
   } catch (error) {
     console.error('Failed to store receipt:', error)
     throw new Error('Failed to store receipt')
   }
 }
 
-export async function analyzeReceipt(
-  imageUrl: string = 'https://img12.dmty.pl//uploads/202112/1640607424_mqpjih_600.jpg'
-): Promise<string> {
+export async function analyzeReceipt(receiptId: string): Promise<string> {
   try {
-    console.log('Analyzing image from URL:', imageUrl)
+    const receipt = await prisma.receipt.findUnique({
+      where: {
+        id: receiptId,
+      },
+    })
+
+    if (!receipt) {
+      throw new Error('Receipt not found')
+    }
+
+    console.log('Analyzing image from receipt ID:', receiptId)
+    console.log('Image Base64:', receipt.image)
 
     const response = await fetch(
       'https://training.nerdbord.io/api/v1/openai/chat/completions',
@@ -46,9 +53,9 @@ export async function analyzeReceipt(
               content: [
                 {
                   type: 'text',
-                  text: 'Oto paragon z biedronki, przeanalizuj co zostało kupione i ile w sumie wydano pieniędzy',
+                  text: 'Oto paragon, przeanalizuj co zostało kupione i ile w sumie wydano pieniędzy',
                 },
-                { type: 'image_url', image_url: { url: imageUrl } },
+                { type: 'image_url', image_url: { url: receipt.image } },
               ],
             },
           ],
