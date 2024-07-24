@@ -1,28 +1,34 @@
-import { NextApiRequest, NextApiResponse } from 'next'
+import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
-  const { id } = req.query
+export async function GET(req: NextRequest) {
+  const url = new URL(req.url)
+  const id = url.searchParams.get('id')
+
+  if (!id) {
+    return NextResponse.json({ error: 'ID is required' }, { status: 400 })
+  }
 
   try {
     const receipt = await prisma.receipt.findUnique({
       where: {
-        id: id as string,
+        id: id,
       },
     })
 
     if (!receipt) {
-      return res.status(404).json({ error: 'Receipt not found' })
+      return NextResponse.json({ error: 'Receipt not found' }, { status: 404 })
     }
 
     const imageBuffer = Buffer.from(receipt.image, 'base64')
-    res.setHeader('Content-Type', 'image/jpeg')
-    res.send(imageBuffer)
+    return new NextResponse(imageBuffer, {
+      headers: { 'Content-Type': 'image/jpeg' },
+    })
   } catch (error) {
     console.error('Error fetching receipt:', error)
-    res.status(500).json({ error: 'Error fetching receipt' })
+    return NextResponse.json(
+      { error: 'Error fetching receipt' },
+      { status: 500 }
+    )
   }
 }
