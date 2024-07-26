@@ -1,9 +1,5 @@
-import CreateUserForm from './components/CreateUserForm/CreateUserForm'
+import LandingPage from './components/CreateUserForm/LandingPage/LandingPage'
 
 export default async function Home() {
-  return (
-    <main className="main">
-      <CreateUserForm />
-    </main>
-  )
+  return <LandingPage />
 }
