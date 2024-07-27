@@ -13,14 +13,14 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id       String @id @default(uuid())
-  email    String @unique
-  password String
-}
-
 model Receipt {
-  id        String   @id @default(uuid())
-  image     String   @default("")
-  createdAt DateTime @default(now())
+  id            String   @id @default(cuid())
+  image         String?
+  date          String?
+  shop          String?
+  total         String?
+  receiptNumber String?
+  category      String?
+  description   String?
+  createdAt     DateTime @default(now())
 }
