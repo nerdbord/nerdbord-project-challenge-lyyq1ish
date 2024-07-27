@@ -1,5 +1,5 @@
 import React from 'react'
-import Scanner from '../components/CreateUserForm/Scanner'
+import Scanner from '../components/Scanner/Scanner'
 
 const page = () => {
   return (

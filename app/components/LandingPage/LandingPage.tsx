@@ -3,8 +3,9 @@
 import { useAuth } from '@clerk/nextjs'
 import Link from 'next/link'
 import React from 'react'
-import Scanner from '../Scanner'
-import ReceiptList from '../../ReceiptList/ReceiptList'
+import ReceiptList from '../ReceiptList/ReceiptList'
+import Scanner from '../Scanner/Scanner'
+
 const LandingPage = () => {
   const { isSignedIn } = useAuth()
   return (
