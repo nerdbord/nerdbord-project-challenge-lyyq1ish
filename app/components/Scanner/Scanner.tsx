@@ -92,7 +92,12 @@ export default function Scanner() {
   return (
     <div className={styles.formContainer}>
       <div className={styles.cameraContainer}>
-        <input type="file" accept="image/*" onChange={handleImageChange} />
+        <input
+          type="file"
+          accept="image/*"
+          capture="environment"
+          onChange={handleImageChange}
+        />
         {preview && (
           <div>
             <img src={preview} alt="Preview" className={styles.preview} />
