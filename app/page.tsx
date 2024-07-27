@@ -1,11 +1,5 @@
-import CreateUserForm from './components/CreateUserForm/Scanner'
-import ReceiptList from './components/ReceiptList/ReceiptList'
+import LandingPage from './components/CreateUserForm/LandingPage/LandingPage'
 
 export default async function Home() {
-  return (
-    <main className="main">
-      <CreateUserForm />
-      <ReceiptList />
-    </main>
-  )
+  return <LandingPage />
 }

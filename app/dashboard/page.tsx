@@ -1,10 +1,12 @@
 import React from 'react'
+import CreateUserForm from '../components/CreateUserForm/CreateUserForm'
 
 const page = () => {
   return (
-    <>
-      <h1 className="2xl mb-5 font-bold">Dashboard</h1>
-    </>
+    <div>
+      <h2>głowna strona po zalogowaniu sie</h2>
+      <CreateUserForm />
+    </div>
   )
 }
 
