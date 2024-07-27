@@ -1,11 +1,11 @@
 import React from 'react'
-import CreateUserForm from '../components/CreateUserForm/CreateUserForm'
+import Scanner from '../components/CreateUserForm/Scanner'
 
 const page = () => {
   return (
     <div>
       <h2>głowna strona po zalogowaniu sie</h2>
-      <CreateUserForm />
+      <Scanner />
     </div>
   )
 }

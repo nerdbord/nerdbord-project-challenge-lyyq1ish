@@ -20,6 +20,13 @@ export async function GET(req: NextRequest) {
       return NextResponse.json({ error: 'Receipt not found' }, { status: 404 })
     }
 
+    if (!receipt.image) {
+      return NextResponse.json(
+        { error: 'No image available for this receipt' },
+        { status: 404 }
+      )
+    }
+
     const imageBuffer = Buffer.from(receipt.image, 'base64')
     return new NextResponse(imageBuffer, {
       headers: { 'Content-Type': 'image/jpeg' },
