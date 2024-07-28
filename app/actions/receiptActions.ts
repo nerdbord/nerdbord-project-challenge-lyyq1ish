@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 'use server'
 
+import { currentUser } from '@clerk/nextjs/server'
 import { prisma } from '../../lib/prisma'
 
 const RECEIPT_CATEGORIES = [
@@ -88,6 +89,28 @@ export async function analyzeReceipt(base64String: string): Promise<any> {
 
 export async function saveAnalyzedReceipt(receiptData: any): Promise<string> {
   try {
+    const user = await currentUser()
+    if (!user || !user.id)
+      throw new Error('User not authenticated or userId not found')
+
+    // Sprawdzenie, czy użytkownik już istnieje w bazie danych
+    const existingUser = await prisma.user.findUnique({
+      where: { id: user.id },
+    })
+
+    // Jeśli użytkownik nie istnieje, zapisz go w bazie danych
+    if (!existingUser) {
+      await prisma.user.create({
+        data: {
+          id: user.id,
+          email: user.emailAddresses[0].emailAddress,
+        },
+      })
+    }
+
+    console.log('User ID:', user.id)
+    console.log('Receipt Data:', receiptData)
+
     const receipt = await prisma.receipt.create({
       data: {
         date: receiptData.DATA || 'N/A',
@@ -97,19 +120,31 @@ export async function saveAnalyzedReceipt(receiptData: any): Promise<string> {
         description: receiptData.OPIS || 'N/A',
         category: receiptData.KATEGORIA || 'Inne',
         image: receiptData.image || '',
+        userId: user.id, // Dodanie userId
       },
     })
 
+    console.log('Receipt saved with ID:', receipt.id)
     return receipt.id
-  } catch (error) {
-    console.error('Failed to save analyzed receipt:', error)
+  } catch (error: any) {
+    console.error('Failed to save analyzed receipt:', error.message)
+    console.error('Error details:', error.meta)
     throw new Error('Failed to save analyzed receipt')
   }
 }
 
+// ... other functions ...
+
 export async function getReceiptsForUser() {
   try {
-    return await prisma.receipt.findMany({})
+    const user = await currentUser()
+    if (!user) throw new Error('User not authenticated')
+
+    return await prisma.receipt.findMany({
+      where: {
+        userId: user.id,
+      },
+    })
   } catch (error) {
     console.error('Failed to get receipts:', error)
     throw new Error('Failed to get receipts')

@@ -7,7 +7,6 @@ const page = () => {
   return (
     <div>
       <Navbar />
-      <h2>głowna strona po zalogowaniu sie</h2>
       <Scanner />
       <ReceiptList />
     </div>
