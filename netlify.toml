@@ -4,3 +4,7 @@
 
 [[plugins]]
   package = "@netlify/plugin-nextjs"
+
+[[functions]]
+  name = "analyzeReceipt"
+  timeout = 26
