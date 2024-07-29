@@ -17,12 +17,3 @@ export async function createUser(data: CreateUserPayload): Promise<User> {
     throw new Error('Failed to create user')
   }
 }
-
-export async function getUsers(): Promise<User[]> {
-  try {
-    return await prisma.user.findMany()
-  } catch (error) {
-    console.error('Failed to fetch users:', error)
-    throw new Error('Failed to fetch users')
-  }
-}

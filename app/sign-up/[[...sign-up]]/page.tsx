@@ -1,7 +1,7 @@
 import React from 'react'
 import { SignUp } from '@clerk/nextjs'
 
-const SignInPage = () => {
+const SignUpPage = () => {
   return (
     <>
       <SignUp />
@@ -9,4 +9,4 @@ const SignInPage = () => {
   )
 }
 
-export default SignInPage
+export default SignUpPage

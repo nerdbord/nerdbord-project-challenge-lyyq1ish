@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 'use client'
 
 import { useState, useEffect } from 'react'
@@ -25,15 +24,23 @@ export default function ReceiptList() {
 
   useEffect(() => {
     async function fetchReceipts() {
-      const fetchedReceipts = await getReceiptsForUser()
-      setReceipts(fetchedReceipts)
+      try {
+        const fetchedReceipts = await getReceiptsForUser()
+        setReceipts(fetchedReceipts)
+      } catch (error) {
+        console.error('Error fetching receipts:', error)
+      }
     }
     fetchReceipts()
   }, [])
 
   const handleReceiptClick = async (receiptId: string) => {
-    const receipt = await getReceiptById(receiptId)
-    setSelectedReceipt(receipt)
+    try {
+      const receipt = await getReceiptById(receiptId)
+      setSelectedReceipt(receipt)
+    } catch (error) {
+      console.error('Error fetching receipt details:', error)
+    }
   }
 
   const handleCloseClick = () => {

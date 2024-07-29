@@ -18,7 +18,7 @@ export default function RootLayout({
   return (
     <ClerkProvider>
       <html lang="en">
-        <body className={`${lato.className} max-w-[393px] bg-[#D9D9D9]`}>
+        <body className={`${lato.className} mx-auto w-[393px] bg-[#D9D9D9]`}>
           <main className="">
             <div className="">{children}</div>
           </main>

@@ -30,6 +30,6 @@ model Receipt {
   category      String?
   description   String?
   createdAt     DateTime @default(now())
-  userId        String?
-  user          User?    @relation("UserReceipts", fields: [userId], references: [id])
+  userId        String
+  user          User     @relation("UserReceipts", fields: [userId], references: [id])
 }
