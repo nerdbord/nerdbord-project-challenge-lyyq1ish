@@ -5,6 +5,6 @@
 [[plugins]]
   package = "@netlify/plugin-nextjs"
 
-[[functions]]
-  name = "analyzeReceipt"
+[functions]
   timeout = 26
+  name = "analyzeReceipt"
