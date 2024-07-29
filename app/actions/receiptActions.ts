@@ -20,6 +20,8 @@ const RECEIPT_CATEGORIES = [
 ]
 
 export async function analyzeReceipt(base64String: string): Promise<any> {
+  console.log('Starting receipt analysis')
+
   try {
     const response = await fetch(
       'https://training.nerdbord.io/api/v1/openai/chat/completions',
@@ -60,6 +62,8 @@ export async function analyzeReceipt(base64String: string): Promise<any> {
         }),
       }
     )
+
+    console.log('Received response from GPT-4o API')
 
     const data = await response.json()
     console.log('GPT-4o Response:', JSON.stringify(data, null, 2))
