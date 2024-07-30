@@ -9,6 +9,8 @@ import {
 } from '@/app/actions/receiptActions'
 import { Poppins } from 'next/font/google'
 import SuccesPage from '../SuccesPage/SuccesPage'
+import Link from 'next/link'
+import { BackIcon, XIcon } from '../Icons'
 
 const poppins = Poppins({ weight: '400', subsets: ['latin'] })
 
@@ -98,10 +100,13 @@ export default function Scanner() {
 
   return (
     <div
-      className={`max-w-screen relative mx-auto flex min-h-screen flex-col items-center justify-center ${result ? 'bg-[#fff]' : ''}`}
+      className={`${poppins.className} max-w-screen relative mx-auto flex min-h-screen flex-col items-center justify-center ${result ? 'bg-[#fff]' : ''}`}
     >
       {!showFinalPage ? (
         <div className="flex flex-col items-center justify-center">
+          <Link className="absolute right-5 top-3" href={'/'}>
+            <XIcon />
+          </Link>
           {!result && (
             <div className="">
               <h1 className="mb-4 text-left text-2xl text-[#383838]">
@@ -186,16 +191,16 @@ export default function Scanner() {
           )}
 
           {result && (
-            <div className="h-full">
+            <div className="mt-16 flex h-full flex-col">
               <div>
                 <button
-                  className="p-4"
+                  className="absolute left-5 top-5"
                   onClick={() => {
                     setResult(null)
                     setPreview(null)
                   }}
                 >
-                  {'<'}
+                  <BackIcon />
                 </button>
               </div>
               {preview && (
@@ -268,7 +273,7 @@ export default function Scanner() {
                       cols={50}
                     />
                   </div>
-                  {preview && (
+                  {preview ? (
                     <div>
                       <p>Zdjęcie</p>
                       <img
@@ -288,13 +293,30 @@ export default function Scanner() {
                         />
                       </div>
                     </div>
+                  ) : (
+                    <div className="mt-16 flex flex-col">
+                      <p>Załącznik</p>
+                      <label
+                        htmlFor="fileInput"
+                        className="w-[100%] rounded-xl border border-[#383838] py-4 text-center"
+                      >
+                        + dodaj załącznik
+                      </label>
+                      <input
+                        id="fileInput"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="hidden rounded-xl"
+                      />
+                    </div>
                   )}
                 </div>
               </div>
               <div className={styles.buttonsGroup}>
                 <button
                   onClick={handleSaveReceipt}
-                  className="mb-10 mt-10 w-[100%] rounded-lg bg-[#383838] py-4 text-center text-white"
+                  className="mb-16 mt-[100px] w-[100%] rounded-lg bg-[#383838] py-4 text-center text-white"
                 >
                   Zapisz
                 </button>
