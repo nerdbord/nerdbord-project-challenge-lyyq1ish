@@ -93,10 +93,12 @@ export default function Scanner() {
   }
 
   return (
-    <div className={`max-w-screen mx-auto p-4 ${result ? 'bg-[#fff]' : ''}`}>
+    <div
+      className={`max-w-screen mx-auto flex min-h-screen flex-col items-center justify-center p-4 ${result ? 'bg-[#fff]' : ''}`}
+    >
       <div className="flex flex-col items-center justify-center">
         {!result && (
-          <div>
+          <div className="">
             <h1 className="mb-4 text-left text-2xl text-[#383838]">
               Zrób zdjęcie swojego paragonu.
             </h1>
