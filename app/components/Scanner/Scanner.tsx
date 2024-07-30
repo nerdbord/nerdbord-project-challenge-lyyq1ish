@@ -8,8 +8,12 @@ import {
   saveAnalyzedReceipt,
 } from '@/app/actions/receiptActions'
 import { Poppins } from 'next/font/google'
+import SuccesPage from '../SuccesPage/SuccesPage'
+import Link from 'next/link'
+import { BackIcon, XIcon } from '../Icons'
 
 const poppins = Poppins({ weight: '400', subsets: ['latin'] })
+
 interface ReceiptData {
   DATA?: string
   SKLEP?: string
@@ -25,7 +29,8 @@ export default function Scanner() {
   const [preview, setPreview] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [sendImage, setSendImage] = useState<boolean>(false)
-  const [successMessage, setSuccessMessage] = useState<string>('')
+  const [successMessage, setSuccessMessage] = useState<boolean>(false)
+  const [showFinalPage, setShowFinalPage] = useState<boolean>(false)
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
@@ -46,7 +51,6 @@ export default function Scanner() {
     }
 
     setLoading(true)
-    setSuccessMessage('')
 
     try {
       const base64String = await toBase64(selectedFile)
@@ -70,16 +74,21 @@ export default function Scanner() {
   }
 
   const handleSaveReceipt = async () => {
+    if (!result?.SUMA || !result?.KATEGORIA) {
+      setSuccessMessage(true)
+      return
+    }
+
     try {
       const savedReceiptId = await saveAnalyzedReceipt({
         ...result,
         image: sendImage ? preview : '',
       })
       console.log('Receipt saved with ID:', savedReceiptId)
-      setSuccessMessage('Paragon zapisany pomyślnie!')
+
+      setShowFinalPage(true)
     } catch (error) {
       console.error('Failed to save receipt:', error)
-      setSuccessMessage('Błąd zapisu paragonu')
     }
   }
 
@@ -94,197 +103,234 @@ export default function Scanner() {
 
   return (
     <div
-      className={`max-w-screen mx-auto flex min-h-screen flex-col items-center justify-center p-4 ${result ? 'bg-[#fff]' : ''}`}
+      className={`${poppins.className} max-w-screen relative mx-auto flex min-h-screen flex-col items-center justify-center p-4 ${result ? 'bg-[#fff]' : ''}`}
     >
-      <div className="flex flex-col items-center justify-center">
-        {!result && (
-          <div className="">
-            <h1 className="mb-4 text-left text-2xl text-[#383838]">
-              Zrób zdjęcie swojego paragonu.
-            </h1>
-            <div>
+      {!showFinalPage ? (
+        <div className="flex flex-col items-center justify-center">
+          <Link className="absolute right-5 top-3" href={'/'}>
+            <XIcon />
+          </Link>
+          {!result && (
+            <div className="">
+              <h1 className="mb-4 text-left text-[22px] text-[#383838]">
+                Zrób zdjęcie swojego paragonu.
+              </h1>
               <div>
-                <img
-                  //@ts-ignore
-                  src={preview}
-                  className="h-[418px] w-[360px] rounded-xl border-2 border-dashed border-black"
-                  alt=""
-                />
-              </div>
-              <p className="my-1 text-[12px] text-[#515151]">
-                Zrób zdjęcie paragonu poprzez umieszczenie go w ramce.
-              </p>
-              <div className="flex w-[100%] flex-col gap-2">
-                {preview === null ? (
-                  <>
-                    <label
-                      htmlFor="fileInput"
-                      className="w-[100%] rounded-lg bg-[#383838] py-4 text-center text-white"
-                    >
-                      Zrób zdjęcie
-                    </label>
-                    <input
-                      id="fileInput"
-                      type="file"
-                      accept="image/*"
-                      capture="environment"
-                      onChange={handleImageChange}
-                      className="hidden"
-                    />
-                  </>
-                ) : (
-                  <button
-                    onClick={handleImageUpload}
-                    className="w-[100%] rounded-lg bg-[#383838] py-4 text-center text-white"
-                    disabled={loading}
-                  >
-                    {loading ? 'Analizowanie...' : 'WYŚLIJ I ANALIZUJ PARAGON'}
-                  </button>
-                )}
-              </div>
-            </div>
-          </div>
-        )}
-
-        {!result && (
-          <div className="flex">
-            <p className="text-center text-[#000]">lub</p>
-          </div>
-        )}
-
-        {!result && (
-          <button
-            onClick={() => {
-              //@ts-ignore
-              setResult(true)
-            }}
-            className="w-[100%] rounded-lg border border-[#383838] py-4 text-center"
-            disabled={loading}
-          >
-            Dodaj ręcznie
-          </button>
-        )}
-
-        {loading && <div className={styles.spinner}></div>}
-
-        {result && (
-          <div className="h-full">
-            <div>
-              <button
-                className="p-4"
-                onClick={() => {
-                  setResult(null)
-                  setPreview(null)
-                }}
-              >
-                {'<'}
-              </button>
-            </div>
-            {preview && (
-              <h3 className={`${poppins.className} text-[20px] text-[#383838]`}>
-                Sprawdź czy dane są poprawne
-              </h3>
-            )}
-            <div>
-              <div className="flex max-w-[364px] flex-col gap-3">
-                <div className="flex flex-col">
-                  <label>Kwota*</label>
-                  <input
-                    className="rounded-xl border border-black p-[12px]"
-                    type="number"
-                    name="SUMA"
-                    value={result.SUMA || ''}
-                    onChange={handleInputChange}
+                <div>
+                  <img
+                    //@ts-ignore
+                    src={preview}
+                    className="h-[418px] w-[360px] rounded-xl border-2 border-dashed border-black"
+                    alt=""
                   />
                 </div>
-                <div className="flex flex-col">
-                  <label>Nazwa sklepu*</label>
-                  <input
-                    className="rounded-xl border border-black p-[12px]"
-                    type="text"
-                    name="SKLEP"
-                    value={result.SKLEP || ''}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label>Kategoria*</label>
-                  <input
-                    className="rounded-xl border border-black p-[12px]"
-                    type="text"
-                    name="KATEGORIA"
-                    value={result.KATEGORIA || ''}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label>Data*</label>
-                  <input
-                    className="rounded-xl border border-black p-[12px]"
-                    type="text"
-                    name="DATA"
-                    value={result.DATA || ''}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label>Numer paragonu*</label>
-                  <input
-                    className="rounded-xl border border-black p-[12px]"
-                    type="text"
-                    name="NUMER_PARAGONU"
-                    value={result.NUMER_PARAGONU || ''}
-                    onChange={handleInputChange}
-                  />
-                </div>
-                <div className="flex flex-col">
-                  <label>Opis</label>
-                  <textarea
-                    name="OPIS"
-                    value={result.OPIS || ''}
-                    className="h-[128px] rounded-xl border border-black"
-                    onChange={handleInputChange}
-                    rows={4}
-                    cols={50}
-                  />
-                </div>
-                {preview && (
-                  <div>
-                    <p>Zdjęcie</p>
-                    <img
-                      //@ts-ignore
-                      src={preview}
-                      className="h-[418px] w-[360px] border-0 border-none"
-                      alt=""
-                    />
-                    <div className="mb-10 p-1">
-                      <label className="mr-5">
-                        Zapisz zdjęcie jako załącznik
+                <p className="my-1 mb-5 text-[12px] text-[#515151]">
+                  Zrób zdjęcie paragonu poprzez umieszczenie go w ramce.
+                </p>
+                <div className="flex w-[100%] flex-col gap-2">
+                  {preview === null ? (
+                    <>
+                      <label
+                        htmlFor="fileInput"
+                        className="w-[100%] rounded-xl bg-[#383838] py-4 text-center text-white"
+                      >
+                        Zrób zdjęcie
                       </label>
                       <input
-                        type="checkbox"
-                        checked={sendImage}
-                        onChange={(e) => setSendImage(e.target.checked)}
+                        id="fileInput"
+                        type="file"
+                        accept="image/*"
+                        capture="environment"
+                        onChange={handleImageChange}
+                        className="hidden"
                       />
-                    </div>
-                  </div>
-                )}
+                    </>
+                  ) : (
+                    <button
+                      onClick={handleImageUpload}
+                      className="w-[100%] rounded-xl bg-[#383838] py-4 text-center text-white"
+                      disabled={loading}
+                    >
+                      {loading ? 'analizowanie...' : 'przeanalizuj paragon'}
+                    </button>
+                  )}
+                </div>
               </div>
             </div>
-            <div className={styles.buttonsGroup}>
-              <button
-                onClick={handleSaveReceipt}
-                className="mb-10 mt-10 w-[100%] rounded-lg bg-[#383838] py-4 text-center text-white"
+          )}
+
+          {!result && (
+            <div className="relative my-4 flex w-full items-center justify-center">
+              <div className="flex-grow border-t border-black"></div>
+              <span
+                className={`${poppins.className} mx-4 text-center text-[16px] text-[#000]`}
               >
-                Zapisz
-              </button>
+                lub
+              </span>
+              <div className="flex-grow border-t border-black"></div>
             </div>
-            {successMessage && (
-              <div className={styles.successMessage}>{successMessage}</div>
-            )}
-          </div>
-        )}
-      </div>
+          )}
+
+          {!result && (
+            <button
+              onClick={() => {
+                //@ts-ignore
+                setResult(true)
+              }}
+              className="w-[100%] rounded-xl border border-[#383838] py-4 text-center"
+              disabled={loading}
+            >
+              Dodaj ręcznie
+            </button>
+          )}
+
+          {loading && (
+            <div>
+              <div className="absolute left-0 top-0 h-screen w-full bg-black/50"></div>
+              <div className="absolute right-1/2 top-1/2 w-[90%] -translate-y-1/2 translate-x-1/2 bg-[#fff] p-3 text-center">
+                trwa generowanie skanu paragonu
+              </div>
+            </div>
+          )}
+
+          {result && (
+            <div className="mt-16 flex h-full flex-col">
+              <div>
+                <button
+                  className="absolute left-5 top-5"
+                  onClick={() => {
+                    setResult(null)
+                    setPreview(null)
+                  }}
+                >
+                  <BackIcon />
+                </button>
+              </div>
+              {preview && (
+                <h3
+                  className={`${poppins.className} text-[20px] text-[#383838]`}
+                >
+                  Sprawdź czy dane są poprawne
+                </h3>
+              )}
+              <div>
+                <div className="flex max-w-[364px] flex-col gap-3">
+                  <div className="flex flex-col">
+                    <label>Kwota*</label>
+                    <input
+                      className={`rounded-xl border border-black p-[12px] ${successMessage && 'border-[red]'}`}
+                      type="string"
+                      name="SUMA"
+                      value={result.SUMA || ''}
+                      onChange={handleInputChange}
+                      required
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label>Nazwa sklepu*</label>
+                    <input
+                      className="rounded-xl border border-black p-[12px]"
+                      type="text"
+                      name="SKLEP"
+                      value={result.SKLEP || 'podaj nazwę sklepu'}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label>Kategoria*</label>
+                    <input
+                      className={`rounded-xl border border-black p-[12px] ${successMessage && 'border-[red]'}`}
+                      type="text"
+                      name="KATEGORIA"
+                      value={result.KATEGORIA || ''}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label>Data*</label>
+                    <input
+                      className="rounded-xl border border-black p-[12px]"
+                      type="text"
+                      name="DATA"
+                      value={result.DATA || 'wybierz datę'}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label>Numer paragonu*</label>
+                    <input
+                      className="rounded-xl border border-black p-[12px]"
+                      type="text"
+                      name="NUMER_PARAGONU"
+                      value={result.NUMER_PARAGONU || 'podaj numer paragonu'}
+                      onChange={handleInputChange}
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <label>Opis</label>
+                    <textarea
+                      name="OPIS"
+                      value={result.OPIS || 'wprowadź opis'}
+                      className="h-[128px] rounded-xl border border-black p-2"
+                      onChange={handleInputChange}
+                      rows={4}
+                      cols={50}
+                    />
+                  </div>
+                  {preview ? (
+                    <div>
+                      <p>Zdjęcie</p>
+                      <img
+                        //@ts-ignore
+                        src={preview}
+                        className="h-[418px] w-[360px] border-0 border-none"
+                        alt=""
+                      />
+                      <div className="mb-10 p-1">
+                        <label className="mr-5">
+                          Zapisz zdjęcie jako załącznik
+                        </label>
+                        <input
+                          type="checkbox"
+                          checked={sendImage}
+                          onChange={(e) => setSendImage(e.target.checked)}
+                        />
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="mt-16 flex flex-col">
+                      <p>Załącznik</p>
+                      <label
+                        htmlFor="fileInput"
+                        className="w-[100%] rounded-xl border border-[#383838] py-4 text-center"
+                      >
+                        + dodaj załącznik
+                      </label>
+                      <input
+                        id="fileInput"
+                        type="file"
+                        accept="image/*"
+                        onChange={handleImageChange}
+                        className="hidden rounded-xl"
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+              <div className={styles.buttonsGroup}>
+                <button
+                  onClick={handleSaveReceipt}
+                  className="mb-16 mt-[100px] w-[100%] rounded-lg bg-[#383838] py-4 text-center text-white"
+                >
+                  Zapisz
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      ) : (
+        <SuccesPage image={preview || ''} />
+      )}
     </div>
   )
 }

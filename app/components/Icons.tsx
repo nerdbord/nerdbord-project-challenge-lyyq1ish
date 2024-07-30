@@ -69,3 +69,40 @@ export const Logo = () => {
     </svg>
   )
 }
+
+export const XIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="30"
+      height="30"
+      viewBox="0 0 30 30"
+      fill="none"
+    >
+      <path
+        d="M22.0708 22.0712L7.92862 7.92905"
+        stroke="black"
+        stroke-linecap="round"
+      />
+      <path
+        d="M22.0714 7.92905L7.92925 22.0712"
+        stroke="black"
+        stroke-linecap="round"
+      />
+    </svg>
+  )
+}
+
+export const BackIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="9"
+      height="16"
+      viewBox="0 0 9 16"
+      fill="none"
+    >
+      <path d="M8.5 0.5L1 8L8.5 15.5" stroke="#383838" stroke-linecap="round" />
+    </svg>
+  )
+}
