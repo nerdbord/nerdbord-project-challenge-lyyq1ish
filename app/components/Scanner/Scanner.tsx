@@ -93,10 +93,8 @@ export default function Scanner() {
   }
 
   return (
-    <div
-      className={`max-w-screen relative mx-auto flex min-h-screen flex-col justify-center p-4 ${result ? 'bg-[#fff]' : ''}`}
-    >
-      <div>
+    <div className={`max-w-screen mx-auto p-4 ${result ? 'bg-[#fff]' : ''}`}>
+      <div className="flex flex-col items-center justify-center">
         {!result && (
           <div>
             <h1 className="mb-4 text-left text-2xl text-[#383838]">
@@ -168,7 +166,7 @@ export default function Scanner() {
         {loading && <div className={styles.spinner}></div>}
 
         {result && (
-          <div className="h-screen">
+          <div className="h-full">
             <div>
               <button
                 className="p-4"
@@ -250,7 +248,7 @@ export default function Scanner() {
                 <img
                   //@ts-ignore
                   src={preview}
-                  className="h-[418px] w-[360px] rounded-xl"
+                  className="h-[418px] w-[360px] border-0 border-none"
                   alt=""
                 />
               </div>

@@ -3,7 +3,7 @@ import Scanner from '../components/Scanner/Scanner'
 
 const page = () => {
   return (
-    <div>
+    <div className="">
       <Scanner />
     </div>
   )
