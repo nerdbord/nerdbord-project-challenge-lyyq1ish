@@ -180,17 +180,19 @@ export default function Scanner() {
                 {'<'}
               </button>
             </div>
-            <h3 className={`${poppins.className} text-[20px] text-[#383838]`}>
-              Sprawdź czy dane są poprawne
-            </h3>
+            {preview && (
+              <h3 className={`${poppins.className} text-[20px] text-[#383838]`}>
+                Sprawdź czy dane są poprawne
+              </h3>
+            )}
             <div>
               <div className="flex max-w-[364px] flex-col gap-3">
                 <div className="flex flex-col">
                   <label>Kwota*</label>
                   <input
                     className="rounded-xl border border-black p-[12px]"
-                    type="text"
-                    name="KWOTA"
+                    type="number"
+                    name="SUMA"
                     value={result.SUMA || ''}
                     onChange={handleInputChange}
                   />
@@ -246,27 +248,33 @@ export default function Scanner() {
                     cols={50}
                   />
                 </div>
-                <p>Zdjęcie</p>
-                <img
-                  //@ts-ignore
-                  src={preview}
-                  className="h-[418px] w-[360px] border-0 border-none"
-                  alt=""
-                />
+                {preview && (
+                  <div>
+                    <p>Zdjęcie</p>
+                    <img
+                      //@ts-ignore
+                      src={preview}
+                      className="h-[418px] w-[360px] border-0 border-none"
+                      alt=""
+                    />
+                    <div className="mb-10 p-1">
+                      <label className="mr-5">
+                        Zapisz zdjęcie jako załącznik
+                      </label>
+                      <input
+                        type="checkbox"
+                        checked={sendImage}
+                        onChange={(e) => setSendImage(e.target.checked)}
+                      />
+                    </div>
+                  </div>
+                )}
               </div>
-            </div>
-            <div className="mb-10 p-1">
-              <label className="mr-5">Zapisz zdjęcie jako załącznik</label>
-              <input
-                type="checkbox"
-                checked={sendImage}
-                onChange={(e) => setSendImage(e.target.checked)}
-              />
             </div>
             <div className={styles.buttonsGroup}>
               <button
                 onClick={handleSaveReceipt}
-                className="mb-10 w-[100%] rounded-lg bg-[#383838] py-4 text-center text-white"
+                className="mb-10 mt-10 w-[100%] rounded-lg bg-[#383838] py-4 text-center text-white"
               >
                 Zapisz
               </button>
