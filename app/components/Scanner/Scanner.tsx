@@ -29,7 +29,7 @@ export default function Scanner() {
   const [preview, setPreview] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [sendImage, setSendImage] = useState<boolean>(false)
-  const [successMessage, setSuccessMessage] = useState<string>('')
+  const [successMessage, setSuccessMessage] = useState<boolean>(false)
   const [showFinalPage, setShowFinalPage] = useState<boolean>(false)
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -51,7 +51,6 @@ export default function Scanner() {
     }
 
     setLoading(true)
-    setSuccessMessage('')
 
     try {
       const base64String = await toBase64(selectedFile)
@@ -75,17 +74,21 @@ export default function Scanner() {
   }
 
   const handleSaveReceipt = async () => {
+    if (!result?.SUMA || !result?.KATEGORIA) {
+      setSuccessMessage(true)
+      return
+    }
+
     try {
       const savedReceiptId = await saveAnalyzedReceipt({
         ...result,
         image: sendImage ? preview : '',
       })
       console.log('Receipt saved with ID:', savedReceiptId)
-      setSuccessMessage('Paragon zapisany pomyślnie!')
+
       setShowFinalPage(true)
     } catch (error) {
       console.error('Failed to save receipt:', error)
-      setSuccessMessage('Błąd zapisu paragonu')
     }
   }
 
@@ -100,7 +103,7 @@ export default function Scanner() {
 
   return (
     <div
-      className={`${poppins.className} max-w-screen relative mx-auto flex min-h-screen flex-col items-center justify-center ${result ? 'bg-[#fff]' : ''}`}
+      className={`${poppins.className} max-w-screen relative mx-auto flex min-h-screen flex-col items-center justify-center p-4 ${result ? 'bg-[#fff]' : ''}`}
     >
       {!showFinalPage ? (
         <div className="flex flex-col items-center justify-center">
@@ -109,7 +112,7 @@ export default function Scanner() {
           </Link>
           {!result && (
             <div className="">
-              <h1 className="mb-4 text-left text-2xl text-[#383838]">
+              <h1 className="mb-4 text-left text-[22px] text-[#383838]">
                 Zrób zdjęcie swojego paragonu.
               </h1>
               <div>
@@ -215,11 +218,12 @@ export default function Scanner() {
                   <div className="flex flex-col">
                     <label>Kwota*</label>
                     <input
-                      className="rounded-xl border border-black p-[12px]"
+                      className={`rounded-xl border border-black p-[12px] ${successMessage && 'border-[red]'}`}
                       type="string"
                       name="SUMA"
                       value={result.SUMA || ''}
                       onChange={handleInputChange}
+                      required
                     />
                   </div>
                   <div className="flex flex-col">
@@ -228,14 +232,14 @@ export default function Scanner() {
                       className="rounded-xl border border-black p-[12px]"
                       type="text"
                       name="SKLEP"
-                      value={result.SKLEP || ''}
+                      value={result.SKLEP || 'podaj nazwę sklepu'}
                       onChange={handleInputChange}
                     />
                   </div>
                   <div className="flex flex-col">
                     <label>Kategoria*</label>
                     <input
-                      className="rounded-xl border border-black p-[12px]"
+                      className={`rounded-xl border border-black p-[12px] ${successMessage && 'border-[red]'}`}
                       type="text"
                       name="KATEGORIA"
                       value={result.KATEGORIA || ''}
@@ -248,7 +252,7 @@ export default function Scanner() {
                       className="rounded-xl border border-black p-[12px]"
                       type="text"
                       name="DATA"
-                      value={result.DATA || ''}
+                      value={result.DATA || 'wybierz datę'}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -258,7 +262,7 @@ export default function Scanner() {
                       className="rounded-xl border border-black p-[12px]"
                       type="text"
                       name="NUMER_PARAGONU"
-                      value={result.NUMER_PARAGONU || ''}
+                      value={result.NUMER_PARAGONU || 'podaj numer paragonu'}
                       onChange={handleInputChange}
                     />
                   </div>
@@ -266,7 +270,7 @@ export default function Scanner() {
                     <label>Opis</label>
                     <textarea
                       name="OPIS"
-                      value={result.OPIS || ''}
+                      value={result.OPIS || 'wprowadź opis'}
                       className="h-[128px] rounded-xl border border-black p-2"
                       onChange={handleInputChange}
                       rows={4}
@@ -321,9 +325,6 @@ export default function Scanner() {
                   Zapisz
                 </button>
               </div>
-              {successMessage && (
-                <div className={styles.successMessage}>{successMessage}</div>
-              )}
             </div>
           )}
         </div>
