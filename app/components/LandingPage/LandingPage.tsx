@@ -1,5 +1,6 @@
 import { Poppins } from 'next/font/google'
 import Link from 'next/link'
+import { Logo, LogoParagraph } from '../Icons'
 
 const poppins = Poppins({ weight: '400', subsets: ['latin'] })
 
@@ -7,10 +8,14 @@ const LandingPage = () => {
   return (
     <div className="flex h-screen flex-col p-4">
       <div className="flex h-[50vh] items-center justify-center">
-        <div>LOGO</div>
+        <div>
+          <Logo />
+        </div>
       </div>
       <div className="flex h-[50vh] flex-col gap-5">
-        <h1 className="mb-5 text-2xl">PARAGONE</h1>
+        <div className="mb-4">
+          <LogoParagraph />
+        </div>
         <div className="mr-3">
           <h3 className="mb-1 text-2xl">
             Zarejestruj się i bądź bliżej swoich finansów
@@ -23,15 +28,15 @@ const LandingPage = () => {
         <div className="flex flex-col gap-3">
           <Link
             className="w-[100%] rounded-lg bg-[#383838] py-4 text-center text-white"
-            href="/sign-in"
+            href="/dashboard"
           >
-            Zaloguj się
+            zaloguj się
           </Link>
           <Link
             className="w-[100%] rounded-lg border border-[#383838] py-4 text-center"
             href="/sign-up"
           >
-            Zarejestruj się
+            zarejestuj się
           </Link>
         </div>
       </div>

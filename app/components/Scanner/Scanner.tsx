@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 'use client'
 
 import { useState } from 'react'
@@ -90,30 +91,83 @@ export default function Scanner() {
   }
 
   return (
-    <div className={styles.formContainer}>
-      <div className={styles.cameraContainer}>
-        <input
-          type="file"
-          accept="image/*"
-          capture="environment"
-          onChange={handleImageChange}
-        />
-        {preview && (
+    <div
+      className={`relative flex h-screen w-screen flex-col justify-center p-4 ${preview ? 'bg-[#fff]' : ''}`}
+    >
+      <div>
+        {!result && (
           <div>
-            <img src={preview} alt="Preview" className={styles.preview} />
+            <h1 className="mb-4 text-left text-2xl text-[#383838]">
+              Zrób zdjęcie swojego paragonu.
+            </h1>
+            <div>
+              <div>
+                <img
+                  //@ts-ignore
+                  src={preview}
+                  className="h-[418px] w-[360px] rounded-xl border-2 border-dashed border-black"
+                  alt=""
+                />
+              </div>
+              <p className="my-1 text-[12px] text-[#515151]">
+                Zrób zdjęcie paragonu poprzez umieszczenie go w ramce.
+              </p>
+              <div className="flex w-[100%] flex-col gap-2">
+                {preview === null ? (
+                  <>
+                    <label
+                      htmlFor="fileInput"
+                      className="w-[100%] rounded-lg bg-[#383838] py-4 text-center text-white"
+                    >
+                      Zrób zdjęcie
+                    </label>
+                    <input
+                      id="fileInput"
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      onChange={handleImageChange}
+                      className="hidden"
+                    />
+                  </>
+                ) : (
+                  <button
+                    onClick={handleImageUpload}
+                    className="w-[100%] rounded-lg bg-[#383838] py-4 text-center text-white"
+                    disabled={loading}
+                  >
+                    {loading ? 'Analizowanie...' : 'WYŚLIJ I ANALIZUJ PARAGON'}
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         )}
-        <button
-          onClick={handleImageUpload}
-          className={styles.submitButton}
-          disabled={loading}
-        >
-          {loading ? 'Analizowanie...' : 'WYŚLIJ I ANALIZUJ PARAGON'}
-        </button>
+
+        {!result && (
+          <div className="flex">
+            <p className="text-center text-[#000]">lub</p>
+          </div>
+        )}
+
+        {!result && (
+          <button
+            onClick={() => {
+              //@ts-ignore
+              setResult(true)
+            }}
+            className="w-[100%] rounded-lg border border-[#383838] py-4 text-center"
+            disabled={loading}
+          >
+            Dodaj ręcznie
+          </button>
+        )}
+
         {loading && <div className={styles.spinner}></div>}
+
         {result && (
-          <div className={styles.result}>
-            <h3>WYNIK ANALIZY:</h3>
+          <div className="">
+            <h3>Sprawdź czy dane są poprawne</h3>
             <div className={styles.inputGroup}>
               <label>Data:</label>
               <input
