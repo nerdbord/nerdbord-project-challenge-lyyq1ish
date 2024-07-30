@@ -46,7 +46,8 @@ export async function analyzeReceipt(base64String: string): Promise<any> {
                 "OPIS": "krótki opis zakupów"
               }. 
               Jeśli jakiejś informacji brakuje, użyj "BRAK DANYCH" jako wartość. 
-              Wybierz jedną kategorię z następującej listy: ${RECEIPT_CATEGORIES.join(', ')}.`,
+              Wybierz jedną kategorię z następującej listy: ${RECEIPT_CATEGORIES.join(', ')}.
+              Jeśli nie rozpoznasz zdjęcia lub uznasz że zdjęcie nie jest paragonem, użyj "BRAK DANYCH" jako wartość.`,
             },
             {
               role: 'user',
