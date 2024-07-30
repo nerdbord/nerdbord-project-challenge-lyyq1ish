@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 'use client'
 
 import { useState } from 'react'
@@ -6,7 +7,9 @@ import {
   analyzeReceipt,
   saveAnalyzedReceipt,
 } from '@/app/actions/receiptActions'
+import { Poppins } from 'next/font/google'
 
+const poppins = Poppins({ weight: '400', subsets: ['latin'] })
 interface ReceiptData {
   DATA?: string
   SKLEP?: string
@@ -90,98 +93,182 @@ export default function Scanner() {
   }
 
   return (
-    <div className={styles.formContainer}>
-      <div className={styles.cameraContainer}>
-        <input
-          type="file"
-          accept="image/*"
-          capture="environment"
-          onChange={handleImageChange}
-        />
-        {preview && (
+    <div
+      className={`max-w-screen relative mx-auto flex min-h-screen flex-col justify-center p-4 ${result ? 'bg-[#fff]' : ''}`}
+    >
+      <div>
+        {!result && (
           <div>
-            <img src={preview} alt="Preview" className={styles.preview} />
+            <h1 className="mb-4 text-left text-2xl text-[#383838]">
+              Zrób zdjęcie swojego paragonu.
+            </h1>
+            <div>
+              <div>
+                <img
+                  //@ts-ignore
+                  src={preview}
+                  className="h-[418px] w-[360px] rounded-xl border-2 border-dashed border-black"
+                  alt=""
+                />
+              </div>
+              <p className="my-1 text-[12px] text-[#515151]">
+                Zrób zdjęcie paragonu poprzez umieszczenie go w ramce.
+              </p>
+              <div className="flex w-[100%] flex-col gap-2">
+                {preview === null ? (
+                  <>
+                    <label
+                      htmlFor="fileInput"
+                      className="w-[100%] rounded-lg bg-[#383838] py-4 text-center text-white"
+                    >
+                      Zrób zdjęcie
+                    </label>
+                    <input
+                      id="fileInput"
+                      type="file"
+                      accept="image/*"
+                      capture="environment"
+                      onChange={handleImageChange}
+                      className="hidden"
+                    />
+                  </>
+                ) : (
+                  <button
+                    onClick={handleImageUpload}
+                    className="w-[100%] rounded-lg bg-[#383838] py-4 text-center text-white"
+                    disabled={loading}
+                  >
+                    {loading ? 'Analizowanie...' : 'WYŚLIJ I ANALIZUJ PARAGON'}
+                  </button>
+                )}
+              </div>
+            </div>
           </div>
         )}
-        <button
-          onClick={handleImageUpload}
-          className={styles.submitButton}
-          disabled={loading}
-        >
-          {loading ? 'Analizowanie...' : 'WYŚLIJ I ANALIZUJ PARAGON'}
-        </button>
+
+        {!result && (
+          <div className="flex">
+            <p className="text-center text-[#000]">lub</p>
+          </div>
+        )}
+
+        {!result && (
+          <button
+            onClick={() => {
+              //@ts-ignore
+              setResult(true)
+            }}
+            className="w-[100%] rounded-lg border border-[#383838] py-4 text-center"
+            disabled={loading}
+          >
+            Dodaj ręcznie
+          </button>
+        )}
+
         {loading && <div className={styles.spinner}></div>}
+
         {result && (
-          <div className={styles.result}>
-            <h3>WYNIK ANALIZY:</h3>
-            <div className={styles.inputGroup}>
-              <label>Data:</label>
-              <input
-                type="text"
-                name="DATA"
-                value={result.DATA || ''}
-                onChange={handleInputChange}
-              />
+          <div className="h-screen">
+            <div>
+              <button
+                className="p-4"
+                onClick={() => {
+                  setResult(null)
+                  setPreview(null)
+                }}
+              >
+                {'<'}
+              </button>
             </div>
-            <div className={styles.inputGroup}>
-              <label>Sklep:</label>
-              <input
-                type="text"
-                name="SKLEP"
-                value={result.SKLEP || ''}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className={styles.inputGroup}>
-              <label>Suma:</label>
-              <input
-                type="text"
-                name="SUMA"
-                value={result.SUMA || ''}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className={styles.inputGroup}>
-              <label>Numer paragonu:</label>
-              <input
-                type="text"
-                name="NUMER_PARAGONU"
-                value={result.NUMER_PARAGONU || ''}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className={styles.inputGroup}>
-              <label>Kategoria:</label>
-              <input
-                type="text"
-                name="KATEGORIA"
-                value={result.KATEGORIA || ''}
-                onChange={handleInputChange}
-              />
-            </div>
-            <div className={styles.inputGroup}>
-              <label>Opis:</label>
-              <textarea
-                name="OPIS"
-                value={result.OPIS || ''}
-                onChange={handleInputChange}
-                rows={4}
-                cols={50}
-              />
-            </div>
-            <div className={styles.checkboxGroup}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={sendImage}
-                  onChange={(e) => setSendImage(e.target.checked)}
+            <h3 className={`${poppins.className} text-[20px] text-[#383838]`}>
+              Sprawdź czy dane są poprawne
+            </h3>
+            <div>
+              <div className="flex max-w-[364px] flex-col gap-3">
+                <div className="flex flex-col">
+                  <label>Kwota*</label>
+                  <input
+                    className="rounded-xl border border-black p-[12px]"
+                    type="text"
+                    name="KWOTA"
+                    value={result.SUMA || ''}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label>Nazwa sklepu*</label>
+                  <input
+                    className="rounded-xl border border-black p-[12px]"
+                    type="text"
+                    name="SKLEP"
+                    value={result.SKLEP || ''}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label>Kategoria*</label>
+                  <input
+                    className="rounded-xl border border-black p-[12px]"
+                    type="text"
+                    name="KATEGORIA"
+                    value={result.KATEGORIA || ''}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label>Data*</label>
+                  <input
+                    className="rounded-xl border border-black p-[12px]"
+                    type="text"
+                    name="DATA"
+                    value={result.DATA || ''}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label>Numer paragonu*</label>
+                  <input
+                    className="rounded-xl border border-black p-[12px]"
+                    type="text"
+                    name="NUMER_PARAGONU"
+                    value={result.NUMER_PARAGONU || ''}
+                    onChange={handleInputChange}
+                  />
+                </div>
+                <div className="flex flex-col">
+                  <label>Opis</label>
+                  <textarea
+                    name="OPIS"
+                    value={result.OPIS || ''}
+                    className="h-[128px] rounded-xl border border-black"
+                    onChange={handleInputChange}
+                    rows={4}
+                    cols={50}
+                  />
+                </div>
+                <p>Zdjęcie</p>
+                <img
+                  //@ts-ignore
+                  src={preview}
+                  className="h-[418px] w-[360px] rounded-xl"
+                  alt=""
                 />
-                Dołącz obrazek do danych
-              </label>
+              </div>
+            </div>
+            <div className="mb-10 p-1">
+              <label className="mr-5">Zapisz zdjęcie jako załącznik</label>
+              <input
+                type="checkbox"
+                checked={sendImage}
+                onChange={(e) => setSendImage(e.target.checked)}
+              />
             </div>
             <div className={styles.buttonsGroup}>
-              <button onClick={handleSaveReceipt} className={styles.saveButton}>
-                ZAPISZ PARAGON
+              <button
+                onClick={handleSaveReceipt}
+                className="mb-10 w-[100%] rounded-lg bg-[#383838] py-4 text-center text-white"
+              >
+                Zapisz
               </button>
             </div>
             {successMessage && (
