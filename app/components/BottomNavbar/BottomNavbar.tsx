@@ -12,7 +12,7 @@ const BottomNavbar = () => {
       <ul className="flex items-center justify-between self-stretch bg-[#EEEBEB] p-3 pb-4 text-[12px]">
         <li>
           <Link
-            className={`flex flex-col items-center px-2 ${pathname === '/homepage' ? 'rounded-lg bg-[#fff]' : ''}`}
+            className={`flex flex-col items-center px-2 py-1 ${pathname === '/homepage' ? 'rounded-lg bg-[#fff]' : ''}`}
             href="/homepage"
           >
             <HomeIcon />
@@ -21,7 +21,7 @@ const BottomNavbar = () => {
         </li>
         <li>
           <Link
-            className={`flex flex-col items-center px-2 ${pathname === '/spendings' ? 'text-blue-500' : ''}`}
+            className={`flex flex-col items-center px-2 py-1 ${pathname === '/spendings' ? 'rounded-lg bg-[#fff]' : ''}`}
             href="/spendings"
           >
             <Spendings />
@@ -30,7 +30,7 @@ const BottomNavbar = () => {
         </li>
         <li className="">
           <Link
-            className={`flex flex-col items-center px-2 ${pathname === '/dashboard' ? 'text-blue-500' : ''}`}
+            className={`flex flex-col items-center px-2 py-1 ${pathname === '/dashboard' ? 'rounded-lg bg-[#fff]' : ''}`}
             href="/dashboard"
           >
             <PlusIcon />
@@ -39,7 +39,7 @@ const BottomNavbar = () => {
         </li>
         <li>
           <Link
-            className={`flex flex-col items-center px-2 ${pathname === '/profile' ? 'text-blue-500' : ''}`}
+            className={`flex flex-col items-center px-2 py-1${pathname === '/profile' ? 'rounded-lg bg-[#fff]' : ''}`}
             href="/profile"
           >
             <Profile />
@@ -48,7 +48,7 @@ const BottomNavbar = () => {
         </li>
         <li>
           <Link
-            className={`flex flex-col items-center px-2 ${pathname === '/categories' ? 'text-blue-500' : ''}`}
+            className={`flex flex-col items-center px-2 py-1 ${pathname === '/categories' ? 'rounded-lg bg-[#fff]' : ''}`}
             href="/categories"
           >
             <Categories />
