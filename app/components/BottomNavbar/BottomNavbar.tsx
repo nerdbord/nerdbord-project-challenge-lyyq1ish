@@ -39,7 +39,7 @@ const BottomNavbar = () => {
         </li>
         <li>
           <Link
-            className={`flex flex-col items-center px-2 py-1${pathname === '/profile' ? 'rounded-lg bg-[#fff]' : ''}`}
+            className={`flex flex-col items-center px-2 py-1 ${pathname === '/profile' ? 'rounded-lg bg-[#fff]' : ''}`}
             href="/profile"
           >
             <Profile />
