@@ -107,7 +107,7 @@ export default function Scanner() {
     >
       {!showFinalPage ? (
         <div className="flex flex-col items-center justify-center">
-          <Link className="absolute right-5 top-3" href={'/'}>
+          <Link className="absolute right-5 top-3" href={'/homepage'}>
             <XIcon />
           </Link>
           {!result && (

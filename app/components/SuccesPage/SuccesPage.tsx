@@ -34,7 +34,7 @@ const SuccesPage = ({ image }: Props) => {
         </Link>
         <Link
           className="w-[100%] rounded-xl border border-[#383838] py-4 text-center"
-          href={'/'}
+          href={'/homepage'}
         >
           na razie wystarczy
         </Link>
