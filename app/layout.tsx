@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { Lato } from 'next/font/google'
 import './globals.css'
 import { ClerkProvider } from '@clerk/nextjs'
+import { plPL } from '@clerk/localizations'
 
 const lato = Lato({ weight: '400', subsets: ['latin'] })
 
@@ -16,7 +17,7 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <ClerkProvider>
+    <ClerkProvider localization={plPL}>
       <html lang="en">
         <body className={`${lato.className} mx-auto w-[393px] bg-[#D9D9D9]`}>
           <main className="">
