@@ -20,8 +20,7 @@ const CurrentSaldo = () => {
 
   return (
     <h3 className="py-8 text-center text-3xl">
-      Saldo:{' '}
-      <span>{total !== null ? `${total.toFixed(2)} zł` : 'Loading...'}</span>
+      Saldo: <span>{total !== null ? `${total} zł` : 'Loading...'}</span>
     </h3>
   )
 }

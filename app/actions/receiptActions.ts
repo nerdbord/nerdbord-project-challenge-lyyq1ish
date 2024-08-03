@@ -9,9 +9,9 @@ const RECEIPT_CATEGORIES = [
   'Elektronika',
   'Odzież',
   'Kosmetyki',
-  'Artykuły gospodarstwa domowego',
+  'Dom',
   'Rozrywka',
-  'Restauracje i fast food',
+  'Jedzenie',
   'Zdrowie i leki',
   'Transport',
   'Edukacja',
@@ -39,7 +39,7 @@ export async function analyzeReceipt(base64String: string): Promise<any> {
               content: `Jesteś asystentem analizującym paragony. Podaj informacje w następującym formacie JSON: 
               {
                 "DATA": "DD.MM.YYYY", 
-                "SKLEP": "nazwa i adres sklepu", 
+                "SKLEP": "tylko nazwa sklepu czyli jak masz Rossmann SDP SP. Z O.O. to tylko Rossmann ", 
                 "SUMA": "kwota całkowita",
                 "WALUTA": "waluta",
                 "NUMER_PARAGONU": "numer paragonu",

@@ -13,6 +13,9 @@
   "dependencies": {
     "@clerk/localizations": "^2.5.2",
     "@clerk/nextjs": "^5.2.6",
+    "@fortawesome/fontawesome-svg-core": "^6.6.0",
+    "@fortawesome/free-solid-svg-icons": "^6.6.0",
+    "@fortawesome/react-fontawesome": "^0.2.2",
     "@prisma/client": "^5.17.0",
     "next": "14.2.5",
     "react": "^18",

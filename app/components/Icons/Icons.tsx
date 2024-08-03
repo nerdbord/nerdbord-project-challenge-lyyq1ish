@@ -203,3 +203,41 @@ export const Categories = () => {
     </svg>
   )
 }
+
+export const ExportIcon = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path d="M12 15V3" stroke="black" stroke-linecap="round" />
+      <path d="M9 5L12 2L15 5" stroke="black" stroke-linecap="round" />
+      <rect
+        x="6"
+        y="9"
+        width="12"
+        height="12"
+        stroke="black"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+    </svg>
+  )
+}
+
+export const FrontArrow = () => {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      fill="none"
+    >
+      <path d="M10 18L16 12L10 6" stroke="#383838" stroke-linecap="round" />
+    </svg>
+  )
+}

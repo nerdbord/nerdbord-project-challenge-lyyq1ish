@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
-import { getReceiptById } from '@/app/actions/receiptActions'
+import { getReceiptById, deleteReceipt } from '@/app/actions/receiptActions'
 
 interface Receipt {
   id: string
@@ -17,6 +17,7 @@ interface Receipt {
 
 export default function SingleReceipt() {
   const [receipt, setReceipt] = useState<Receipt | null>(null)
+  const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter()
   const { id } = useParams()
 
@@ -36,6 +37,20 @@ export default function SingleReceipt() {
 
   const handleBackClick = () => {
     router.push('/spendings')
+  }
+
+  const handleDeleteClick = async () => {
+    setLoading(true)
+    try {
+      if (id) {
+        await deleteReceipt(id as string)
+        router.push('/spendings')
+      }
+    } catch (error) {
+      console.error('Error deleting receipt:', error)
+    } finally {
+      setLoading(false)
+    }
   }
 
   if (!receipt) {
@@ -64,6 +79,13 @@ export default function SingleReceipt() {
           className="mt-4 h-auto max-w-full"
         />
       )}
+      <button
+        className="mt-4 rounded bg-red-500 p-2 text-white hover:bg-red-600"
+        onClick={handleDeleteClick}
+        disabled={loading}
+      >
+        {loading ? 'Usuwanie...' : 'Usuń paragon'}
+      </button>
     </div>
   )
 }
