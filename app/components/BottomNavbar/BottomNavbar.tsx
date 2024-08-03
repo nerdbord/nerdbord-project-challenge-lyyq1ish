@@ -2,7 +2,13 @@
 import Link from 'next/link'
 import React from 'react'
 import { usePathname } from 'next/navigation'
-import { Categories, HomeIcon, PlusIcon, Profile, Spendings } from '../Icons'
+import {
+  Categories,
+  HomeIcon,
+  PlusIcon,
+  Profile,
+  Spendings,
+} from '../Icons/Icons'
 
 const BottomNavbar = () => {
   const pathname = usePathname()

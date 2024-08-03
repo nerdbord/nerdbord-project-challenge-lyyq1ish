@@ -9,9 +9,9 @@ const RECEIPT_CATEGORIES = [
   'Elektronika',
   'Odzież',
   'Kosmetyki',
-  'Artykuły gospodarstwa domowego',
+  'Dom',
   'Rozrywka',
-  'Restauracje i fast food',
+  'Jedzenie',
   'Zdrowie i leki',
   'Transport',
   'Edukacja',
@@ -39,8 +39,9 @@ export async function analyzeReceipt(base64String: string): Promise<any> {
               content: `Jesteś asystentem analizującym paragony. Podaj informacje w następującym formacie JSON: 
               {
                 "DATA": "DD.MM.YYYY", 
-                "SKLEP": "nazwa i adres sklepu", 
-                "SUMA": "kwota całkowita", 
+                "SKLEP": "tylko nazwa sklepu czyli jak masz Rossmann SDP SP. Z O.O. to tylko Rossmann ", 
+                "SUMA": "kwota całkowita",
+                "WALUTA": "waluta",
                 "NUMER_PARAGONU": "numer paragonu",
                 "KATEGORIA": "wybrana kategoria",
                 "OPIS": "krótki opis zakupów"
@@ -188,4 +189,30 @@ export async function deleteReceipt(receiptId: string) {
     console.error('Failed to delete receipt:', error)
     throw new Error('Failed to delete receipt')
   }
+}
+
+export async function getTotalSpent() {
+  const user = await currentUser()
+  if (!user || !user.id) {
+    throw new Error('User not authenticated or userId not found')
+  }
+
+  const receipts = await prisma.receipt.findMany({
+    where: {
+      userId: user.id,
+    },
+  })
+
+  const total = receipts.reduce((acc, receipt) => {
+    const amount = parseFloat(receipt.total || '0')
+    if (isNaN(amount)) {
+      console.warn(
+        `Invalid amount for receipt id ${receipt.id}: ${receipt.total}`
+      )
+      return acc
+    }
+    return acc + amount
+  }, 0)
+
+  return total
 }

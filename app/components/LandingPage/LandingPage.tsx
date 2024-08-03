@@ -1,6 +1,6 @@
 import { Poppins } from 'next/font/google'
 import Link from 'next/link'
-import { Logo, LogoParagraph } from '../Icons'
+import { Logo, LogoParagraph } from '../Icons/Icons'
 
 const poppins = Poppins({ weight: '400', subsets: ['latin'] })
 

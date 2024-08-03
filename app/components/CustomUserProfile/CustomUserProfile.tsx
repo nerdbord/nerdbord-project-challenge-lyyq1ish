@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 'use client'
 import React, { useState } from 'react'
-import { useUser, useClerk } from '@clerk/nextjs'
+import { useUser } from '@clerk/nextjs'
 
 const CustomUserProfile = () => {
   const { user, isLoaded } = useUser()

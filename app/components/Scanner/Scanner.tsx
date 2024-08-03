@@ -10,7 +10,7 @@ import {
 import { Poppins } from 'next/font/google'
 import SuccesPage from '../SuccesPage/SuccesPage'
 import Link from 'next/link'
-import { BackIcon, XIcon } from '../Icons'
+import { BackIcon, XIcon } from '../Icons/Icons'
 
 const poppins = Poppins({ weight: '400', subsets: ['latin'] })
 

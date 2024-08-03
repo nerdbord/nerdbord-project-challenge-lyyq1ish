@@ -1,7 +1,7 @@
 'use client'
 import Link from 'next/link'
 import React from 'react'
-import { Logo } from '../Icons'
+import { Logo } from '../Icons/Icons'
 
 interface Props {
   image: string
