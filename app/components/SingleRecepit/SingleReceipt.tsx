@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { getReceiptById, deleteReceipt } from '@/app/actions/receiptActions'
+import TopNavbar from '../TopNavbar/TopNavbar'
 
 interface Receipt {
   id: string
@@ -35,10 +36,6 @@ export default function SingleReceipt() {
     fetchReceipt()
   }, [id])
 
-  const handleBackClick = () => {
-    router.push('/spendings')
-  }
-
   const handleDeleteClick = async () => {
     setLoading(true)
     try {
@@ -59,12 +56,7 @@ export default function SingleReceipt() {
 
   return (
     <div className="p-4">
-      <button
-        className="mb-4 rounded bg-blue-500 p-2 text-white hover:bg-blue-600"
-        onClick={handleBackClick}
-      >
-        Wróć
-      </button>
+      <TopNavbar position="block" backIconHref="spendings" />
       <h2 className="mb-4 text-2xl font-semibold">Szczegóły paragonu</h2>
       <p>Data: {receipt.date}</p>
       <p>Sklep: {receipt.shop}</p>
