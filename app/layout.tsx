@@ -19,7 +19,9 @@ export default function RootLayout({
   return (
     <ClerkProvider localization={plPL}>
       <html lang="en">
-        <body className={`${lato.className} mx-auto w-[393px] bg-[#D9D9D9]`}>
+        <body
+          className={`${lato.className} mx-auto min-h-screen w-[393px] bg-[#D9D9D9] text-[#383838]`}
+        >
           <main className="">
             <div className="">{children}</div>
           </main>

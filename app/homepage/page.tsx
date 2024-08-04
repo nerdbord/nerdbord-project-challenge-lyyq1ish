@@ -7,10 +7,12 @@ import CurrentSaldo from '../components/CurrentSaldo/CurrentSaldo'
 
 const page = () => {
   return (
-    <div className="bg-[#fff]">
-      <CurrentSaldo />
+    <>
+      <div className="min-h-[88vh] bg-[#fff]">
+        <CurrentSaldo />
+      </div>
       <BottomNavbar />
-    </div>
+    </>
   )
 }
 

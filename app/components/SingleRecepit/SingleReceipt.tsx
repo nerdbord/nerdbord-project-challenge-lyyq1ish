@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
 import { getReceiptById, deleteReceipt } from '@/app/actions/receiptActions'
 import TopNavbar from '../TopNavbar/TopNavbar'
+import Link from 'next/link'
+import { Poppins } from 'next/font/google'
 
 interface Receipt {
   id: string
@@ -15,6 +17,8 @@ interface Receipt {
   category: string | null
   description: string | null
 }
+
+const poppins = Poppins({ weight: '400', subsets: ['latin'] })
 
 export default function SingleReceipt() {
   const [receipt, setReceipt] = useState<Receipt | null>(null)
@@ -55,29 +59,72 @@ export default function SingleReceipt() {
   }
 
   return (
-    <div className="p-4">
-      <TopNavbar position="block" backIconHref="spendings" />
-      <h2 className="mb-4 text-2xl font-semibold">Szczegóły paragonu</h2>
-      <p>Data: {receipt.date}</p>
-      <p>Sklep: {receipt.shop}</p>
-      <p>Suma: {receipt.total}</p>
-      <p>Numer paragonu: {receipt.receiptNumber}</p>
-      <p>Kategoria: {receipt.category}</p>
-      <p>Opis: {receipt.description}</p>
-      {receipt.image && (
-        <img
-          src={receipt.image}
-          alt="Full receipt"
-          className="mt-4 h-auto max-w-full"
-        />
-      )}
-      <button
-        className="mt-4 rounded bg-red-500 p-2 text-white hover:bg-red-600"
-        onClick={handleDeleteClick}
-        disabled={loading}
-      >
-        {loading ? 'Usuwanie...' : 'Usuń paragon'}
-      </button>
+    <div className={`py-8 ${poppins.className}`}>
+      <TopNavbar position="block" backIconHref="nu" />
+      <div className="relative m-4 rounded-xl bg-[#EEEBEB] p-4 text-[12px]">
+        <Link
+          href={`/editreceipt/${id}`}
+          className="absolute right-0 p-[10px] text-[#8E8E8E]"
+        >
+          Edytuj
+        </Link>
+        <div className="p-2 text-[#8E8E8E]">
+          <p>Kwota</p>
+          <p className="text-[18px] text-[#383838]">{receipt.total} zł</p>
+        </div>
+        <hr className="h-[2px] bg-[#DBDBDB]" />
+        <div className="p-2 text-[#8E8E8E]">
+          <p>Nazwa sklepu</p>
+          <p className="text-[18px] text-[#383838]">{receipt.shop}</p>
+        </div>
+        <hr className="h-[2px] bg-[#DBDBDB]" />
+        <div className="p-2 text-[#8E8E8E]">
+          <p>Kategoria</p>
+          <p className="text-[18px] text-[#383838]">{receipt.category}</p>
+        </div>
+        <hr className="h-[2px] bg-[#DBDBDB]" />
+        <div className="p-2 text-[#8E8E8E]">
+          <p>Data</p>
+          <p className="text-[18px] text-[#383838]">{receipt.date}</p>
+        </div>
+        <hr className="h-[2px] bg-[#DBDBDB]" />
+        <div className="p-2 text-[#8E8E8E]">
+          <p>Numer paragonu</p>
+          <p className="text-[18px] text-[#383838]">{receipt.receiptNumber}</p>
+        </div>
+        <hr className="h-[2px] bg-[#DBDBDB]" />
+        <div className="p-2 text-[#8E8E8E]">
+          <p>Opis</p>
+          <p className="text-[18px] text-[#383838]">{receipt.description}</p>
+        </div>
+      </div>
+      <div className="m-4 rounded-xl bg-[#EEEBEB] p-4">
+        <p>Zdjęcie</p>
+        {receipt.image && (
+          <img
+            src={receipt.image}
+            alt="Full receipt"
+            className="mt-4 h-auto max-w-full"
+          />
+        )}
+      </div>
+      <div className="mx-4 flex flex-col gap-2 pb-8">
+        <button
+          className="w-[100%] rounded-xl border border-[#383838] py-4 text-center"
+          onClick={handleDeleteClick}
+          disabled={loading}
+        >
+          {loading ? 'Usuwanie...' : 'Usuń paragon'}
+        </button>
+        <div className="flex w-full flex-col gap-3">
+          <Link
+            className="w-[100%] rounded-xl bg-[#383838] py-4 text-center text-white"
+            href={'/spendings'}
+          >
+            Wróć do listy wydatków
+          </Link>
+        </div>
+      </div>
     </div>
   )
 }
