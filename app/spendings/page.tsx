@@ -5,11 +5,13 @@ import ReceiptList from '../components/ReceiptList/ReceiptList'
 
 const spendings = () => {
   return (
-    <div className="bg-[#fff]">
-      <CurrentSaldo />
-      <ReceiptList />
+    <>
+      <div className="min-h-[88vh] bg-[#fff]">
+        <CurrentSaldo />
+        <ReceiptList />
+      </div>
       <BottomNavbar />
-    </div>
+    </>
   )
 }
 
