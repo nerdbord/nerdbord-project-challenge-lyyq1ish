@@ -103,7 +103,7 @@ export default function Scanner() {
 
   return (
     <>
-      <TopNavbar backIconHref="nl" position="" />
+      <TopNavbar backIconHref="nl" position="absolute" />
       <div
         className={`${poppins.className} max-w-screen relative mx-auto flex min-h-screen flex-col items-center justify-center p-4 ${result ? 'bg-[#fff]' : ''}`}
       >
