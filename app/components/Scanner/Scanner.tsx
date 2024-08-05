@@ -231,7 +231,7 @@ export default function Scanner() {
                         className="rounded-xl border border-black p-[12px]"
                         type="text"
                         name="SKLEP"
-                        value={result.SKLEP || 'podaj nazwę sklepu'}
+                        value={result.SKLEP || ''}
                         onChange={handleInputChange}
                       />
                     </div>
@@ -251,7 +251,7 @@ export default function Scanner() {
                         className="rounded-xl border border-black p-[12px]"
                         type="text"
                         name="DATA"
-                        value={result.DATA || 'wybierz datę'}
+                        value={result.DATA || ''}
                         onChange={handleInputChange}
                       />
                     </div>
@@ -261,7 +261,7 @@ export default function Scanner() {
                         className="rounded-xl border border-black p-[12px]"
                         type="text"
                         name="NUMER_PARAGONU"
-                        value={result.NUMER_PARAGONU || 'podaj numer paragonu'}
+                        value={result.NUMER_PARAGONU || ''}
                         onChange={handleInputChange}
                       />
                     </div>
