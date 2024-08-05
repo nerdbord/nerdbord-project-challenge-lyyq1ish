@@ -57,9 +57,9 @@ const CustomUserProfile = () => {
       </div>
       <button
         onClick={handleUpdateProfile}
-        className="rounded bg-blue-500 px-4 py-2 text-white hover:bg-blue-600"
+        className="w-[100%] rounded-xl border border-[#383838] py-4 text-center"
       >
-        Update Profile
+        Zaaktualizuj profil
       </button>
       {statusMessage && (
         <p className="mt-2 text-sm text-gray-600">{statusMessage}</p>

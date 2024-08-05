@@ -4,10 +4,10 @@ import React from 'react'
 import { usePathname } from 'next/navigation'
 import {
   Categories,
-  HomeIcon,
   PlusIcon,
   Profile,
   Spendings,
+  StatsIcons,
 } from '../Icons/Icons'
 
 const BottomNavbar = () => {
@@ -21,8 +21,8 @@ const BottomNavbar = () => {
             className={`flex flex-col items-center px-2 py-1 ${pathname === '/homepage' ? 'rounded-lg bg-[#fff]' : ''}`}
             href="/homepage"
           >
-            <HomeIcon />
-            <p>Home</p>
+            <StatsIcons />
+            <p>Statystyki</p>
           </Link>
         </li>
         <li>
