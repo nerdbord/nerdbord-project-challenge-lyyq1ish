@@ -61,7 +61,12 @@ export default function SingleReceipt() {
   return (
     <div className={`py-8 ${poppins.className}`}>
       <TopNavbar position="block" backIconHref="spendings" />
-      <div className="relative m-4 rounded-xl bg-[#EEEBEB] p-4 text-[12px]">
+      <div
+        style={{
+          boxShadow: '0px 4px 12.3px 0px rgba(0, 0, 0, 0.25)',
+        }}
+        className="relative m-4 rounded-xl bg-[#FFF] p-4 text-[12px]"
+      >
         <Link
           href={`/editreceipt/${id}`}
           className="absolute right-0 p-[10px] text-[#8E8E8E]"
@@ -98,7 +103,12 @@ export default function SingleReceipt() {
           <p className="text-[18px] text-[#383838]">{receipt.description}</p>
         </div>
       </div>
-      <div className="m-4 rounded-xl bg-[#EEEBEB] p-4">
+      <div
+        style={{
+          boxShadow: '0px 4px 12.3px 0px rgba(0, 0, 0, 0.25)',
+        }}
+        className="m-4 rounded-xl bg-[#FFF] p-4"
+      >
         <p>Zdjęcie</p>
         {receipt.image && (
           <img
@@ -118,7 +128,7 @@ export default function SingleReceipt() {
         </button>
         <div className="flex w-full flex-col gap-3">
           <Link
-            className="w-[100%] rounded-xl bg-[#383838] py-4 text-center text-white"
+            className="w-[100%] rounded-xl bg-[#3F5FE3] py-4 text-center text-white"
             href={'/spendings'}
           >
             Wróć do listy wydatków

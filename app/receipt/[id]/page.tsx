@@ -3,7 +3,7 @@ import React from 'react'
 
 const page = () => {
   return (
-    <div className="h-screen bg-[#fff]">
+    <div className="min-h-screen">
       <SingleReceipt />
     </div>
   )

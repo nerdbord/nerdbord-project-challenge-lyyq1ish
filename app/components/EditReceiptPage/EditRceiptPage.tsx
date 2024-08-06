@@ -147,7 +147,7 @@ export default function EditReceipt() {
           {loading ? 'Zapisywanie...' : 'Zapisz zmiany'}
         </button>
         <Link
-          className="w-[100%] rounded-xl bg-[#383838] py-4 text-center text-white"
+          className="w-[100%] rounded-xl bg-[#3F5FE3] py-4 text-center text-white"
           href={`/receipt/${id}`}
         >
           Anuluj
