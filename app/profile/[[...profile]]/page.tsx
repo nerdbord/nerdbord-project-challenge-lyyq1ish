@@ -10,7 +10,7 @@ const profile = () => {
         <div className="flex w-full flex-col p-4">
           <CustomUserProfile />
           <SignOutButton>
-            <button className="my-2 w-[100%] rounded-lg bg-[#383838] py-4 text-center text-white">
+            <button className="my-2 w-[100%] rounded-lg bg-[#3F5FE3] py-4 text-center text-white">
               Wyloguj się
             </button>
           </SignOutButton>

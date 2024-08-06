@@ -149,7 +149,7 @@ const MonthlySpendingsDiagram = () => {
                       },
                       font: {
                         weight: 'bold',
-                        size: 10,
+                        size: 5,
                       },
 
                       borderRadius: 8,
