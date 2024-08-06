@@ -3,7 +3,6 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { getReceiptsForUser } from '@/app/actions/receiptActions'
-import Link from 'next/link'
 import { Poppins } from 'next/font/google'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {
@@ -21,6 +20,7 @@ import {
   faQuestion,
 } from '@fortawesome/free-solid-svg-icons'
 import { ExportIcon, FrontArrow } from '../Icons/Icons'
+import Papa from 'papaparse'
 
 interface Receipt {
   id: string
@@ -28,6 +28,8 @@ interface Receipt {
   shop: string | null
   total: string | null
   category: string | null
+  receiptNumber: string | null
+  description: string | null
 }
 
 const poppins = Poppins({ weight: '400', subsets: ['latin'] })
@@ -60,6 +62,7 @@ export default function ReceiptList() {
         const fetchedReceipts = await getReceiptsForUser()
         setReceipts(fetchedReceipts)
         setFilteredReceipts(fetchedReceipts)
+        console.log('Fetched Receipts:', fetchedReceipts)
       } catch (error) {
         console.error('Error fetching receipts:', error)
       } finally {
@@ -73,6 +76,30 @@ export default function ReceiptList() {
     router.push(`/receipt/${receiptId}`)
   }
 
+  const exportToCSV = () => {
+    const data = filteredReceipts.map((receipt, index) => ({
+      'L.P': index + 1,
+      Kwota: receipt.total,
+      'Nazwa Sklepu': receipt.shop,
+      Kategoria: receipt.category,
+      Data: receipt.date,
+      'Numer paragonu': receipt.receiptNumber,
+      Opis: receipt.description,
+    }))
+
+    const csv = Papa.unparse(data, { header: true })
+
+    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
+    const link = document.createElement('a')
+    const url = URL.createObjectURL(blob)
+    link.setAttribute('href', url)
+    link.setAttribute('download', 'export.csv')
+    link.style.visibility = 'hidden'
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  }
+
   return (
     <>
       <div className="m-4 rounded-xl bg-[#EEEBEB] py-4">
@@ -80,12 +107,12 @@ export default function ReceiptList() {
           className={`mb-1 flex items-center justify-around ${poppins.className}`}
         >
           <h4 className="text-[20px]">Moje wydatki</h4>
-          <Link className="text-[14px]" href="/">
+          <button onClick={exportToCSV} className="text-[14px]">
             <div className="flex items-center gap-1">
               Eksportuj
               <ExportIcon />
             </div>
-          </Link>
+          </button>
         </div>
         {loading ? (
           <div className="py-4 text-center">Ładowanie...</div>
@@ -112,6 +139,7 @@ export default function ReceiptList() {
                       <div className="flex gap-2 text-[12px]">
                         <p>{receipt.shop}</p>
                         <p>{receipt.date}</p>
+                        <p>Numer paragonu: {receipt.receiptNumber}</p>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
