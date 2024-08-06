@@ -2,6 +2,10 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 
+interface CategoryTotals {
+  [key: string]: number
+}
+
 export async function GET() {
   try {
     const receipts = await prisma.receipt.findMany({
@@ -11,7 +15,7 @@ export async function GET() {
       },
     })
 
-    const categoryTotals = receipts.reduce((acc, receipt) => {
+    const categoryTotals = receipts.reduce<CategoryTotals>((acc, receipt) => {
       if (receipt.date && receipt.total) {
         const month = new Date(receipt.date).toLocaleString('default', {
           month: 'long',
