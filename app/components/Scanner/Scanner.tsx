@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 'use client'
-
 import { useState } from 'react'
-import styles from './Scanner.module.scss'
 import {
   analyzeReceipt,
   saveAnalyzedReceipt,
@@ -22,6 +20,21 @@ interface ReceiptData {
   KATEGORIA?: string
   OPIS?: string
 }
+
+const RECEIPT_CATEGORIES = [
+  'Spożywcze',
+  'Elektronika',
+  'Odzież',
+  'Kosmetyki',
+  'Dom',
+  'Rozrywka',
+  'Jedzenie',
+  'Zdrowie i leki',
+  'Transport',
+  'Edukacja',
+  'Hobby',
+  'Inne',
+]
 
 export default function Scanner() {
   const [result, setResult] = useState<ReceiptData | null>(null)
@@ -65,7 +78,9 @@ export default function Scanner() {
   }
 
   const handleInputChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+    >
   ) => {
     const { name, value } = e.target
     setResult((prevResult) =>
@@ -74,7 +89,7 @@ export default function Scanner() {
   }
 
   const handleSaveReceipt = async () => {
-    if (!result?.SUMA || !result?.KATEGORIA) {
+    if (!result?.SUMA || !result?.KATEGORIA || !result?.DATA) {
       setSuccessMessage(true)
       return
     }
@@ -217,7 +232,7 @@ export default function Scanner() {
                     <div className="flex flex-col">
                       <label>Kwota*</label>
                       <input
-                        className={`rounded-xl border border-black p-[12px] ${successMessage && 'border-[red]'}`}
+                        className={`rounded-xl border p-[12px] ${successMessage && !result?.SUMA && 'border-[red]'}`}
                         type="string"
                         name="SUMA"
                         value={result.SUMA || ''}
@@ -228,7 +243,7 @@ export default function Scanner() {
                     <div className="flex flex-col">
                       <label>Nazwa sklepu*</label>
                       <input
-                        className="rounded-xl border border-black p-[12px]"
+                        className={`rounded-xl border p-[12px] ${successMessage && !result?.SKLEP && 'border-[red]'}`}
                         type="text"
                         name="SKLEP"
                         value={result.SKLEP || ''}
@@ -237,13 +252,19 @@ export default function Scanner() {
                     </div>
                     <div className="flex flex-col">
                       <label>Kategoria*</label>
-                      <input
-                        className={`rounded-xl border border-black p-[12px] ${successMessage && 'border-[red]'}`}
-                        type="text"
+                      <select
+                        className={`rounded-xl border p-[12px] ${successMessage && !result?.KATEGORIA && 'border-[red]'}`}
                         name="KATEGORIA"
                         value={result.KATEGORIA || ''}
                         onChange={handleInputChange}
-                      />
+                      >
+                        <option value="">Wybierz kategorię</option>
+                        {RECEIPT_CATEGORIES.map((category) => (
+                          <option key={category} value={category}>
+                            {category}
+                          </option>
+                        ))}
+                      </select>
                     </div>
                     <div className="flex flex-col">
                       <label>Data*</label>
@@ -316,7 +337,7 @@ export default function Scanner() {
                     )}
                   </div>
                 </div>
-                <div className={styles.buttonsGroup}>
+                <div>
                   <button
                     onClick={handleSaveReceipt}
                     className="mb-16 mt-[100px] w-[100%] rounded-lg bg-[#383838] py-4 text-center text-white"

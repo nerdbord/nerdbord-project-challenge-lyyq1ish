@@ -60,9 +60,14 @@ export default function ReceiptList() {
     async function fetchReceipts() {
       try {
         const fetchedReceipts = await getReceiptsForUser()
-        setReceipts(fetchedReceipts)
-        setFilteredReceipts(fetchedReceipts)
-        console.log('Fetched Receipts:', fetchedReceipts)
+        const sortedReceipts = fetchedReceipts.sort((a, b) => {
+          if (!a.date) return -1
+          if (!b.date) return 1
+          return new Date(b.date).getTime() - new Date(a.date).getTime()
+        })
+        setReceipts(sortedReceipts)
+        setFilteredReceipts(sortedReceipts)
+        console.log('Fetched Receipts:', sortedReceipts)
       } catch (error) {
         console.error('Error fetching receipts:', error)
       } finally {

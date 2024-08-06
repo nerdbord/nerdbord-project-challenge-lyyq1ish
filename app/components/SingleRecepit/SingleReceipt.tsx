@@ -60,7 +60,7 @@ export default function SingleReceipt() {
 
   return (
     <div className={`py-8 ${poppins.className}`}>
-      <TopNavbar position="block" backIconHref="nu" />
+      <TopNavbar position="block" backIconHref="spendings" />
       <div className="relative m-4 rounded-xl bg-[#EEEBEB] p-4 text-[12px]">
         <Link
           href={`/editreceipt/${id}`}
