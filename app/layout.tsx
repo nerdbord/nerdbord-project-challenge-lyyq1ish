@@ -20,7 +20,7 @@ export default function RootLayout({
     <ClerkProvider localization={plPL}>
       <html lang="en">
         <body
-          className={`${lato.className} mx-auto min-h-screen w-[393px] bg-[#D9D9D9] text-[#383838]`}
+          className={`${lato.className} mx-auto min-h-screen w-[393px] bg-[#F6F5FA] text-[#383838]`}
         >
           <main className="">
             <div className="">{children}</div>

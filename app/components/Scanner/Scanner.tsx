@@ -146,7 +146,7 @@ export default function Scanner() {
                       <>
                         <label
                           htmlFor="fileInput"
-                          className="w-[100%] rounded-xl bg-[#383838] py-4 text-center text-white"
+                          className="w-[100%] rounded-xl bg-[#3F5FE3] py-4 text-center text-white"
                         >
                           Zrób zdjęcie
                         </label>
@@ -162,7 +162,7 @@ export default function Scanner() {
                     ) : (
                       <button
                         onClick={handleImageUpload}
-                        className="w-[100%] rounded-xl bg-[#383838] py-4 text-center text-white"
+                        className="w-[100%] rounded-xl bg-[#3F5FE3] py-4 text-center text-white"
                         disabled={loading}
                       >
                         {loading ? 'analizowanie...' : 'przeanalizuj paragon'}
@@ -340,7 +340,7 @@ export default function Scanner() {
                 <div>
                   <button
                     onClick={handleSaveReceipt}
-                    className="mb-16 mt-[100px] w-[100%] rounded-lg bg-[#383838] py-4 text-center text-white"
+                    className="mb-16 mt-[100px] w-[100%] rounded-lg bg-[#3F5FE3] py-4 text-center text-white"
                   >
                     Zapisz
                   </button>

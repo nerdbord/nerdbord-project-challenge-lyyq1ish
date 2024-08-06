@@ -6,7 +6,7 @@ import ReceiptList from '../components/ReceiptList/ReceiptList'
 const spendings = () => {
   return (
     <>
-      <div className="min-h-[88vh] bg-[#fff]">
+      <div className="min-h-[88vh] bg-[#F6F5FA]">
         <CurrentSaldo />
         <ReceiptList />
       </div>

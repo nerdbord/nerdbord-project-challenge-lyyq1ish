@@ -32,18 +32,18 @@ ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels)
 */
 
 const RECEIPT_CATEGORIES = [
-  { category: 'Spożywcze', color: '#F27459' },
-  { category: 'Elektronika', color: '#F29882' },
-  { category: 'Odzież', color: '#E56B5A' },
-  { category: 'Kosmetyki', color: '#F2C563' },
-  { category: 'Dom', color: '#82F298' },
-  { category: 'Rozrywka', color: '#63B978' },
+  { category: 'Spożywcze', color: '#49D1B5' },
+  { category: 'Elektronika', color: '#5DB1FA' },
+  { category: 'Odzież', color: '#8B96F7' },
+  { category: 'Kosmetyki', color: '#DB8BF7' },
+  { category: 'Dom', color: '#f78b8b' },
+  { category: 'Rozrywka', color: '#FF93B5' },
   { category: 'Jedzenie', color: '#7DBEF2' },
   { category: 'Zdrowie i leki', color: '#78A8D9' },
   { category: 'Transport', color: '#B582F2' },
   { category: 'Edukacja', color: '#EEEEEE' },
   { category: 'Hobby', color: '#B9B9B9' },
-  { category: 'Inne', color: '#848484' },
+  { category: 'Inne', color: '#63B978' },
 ]
 
 const MonthlySpendingsDiagram = () => {
@@ -127,7 +127,12 @@ const MonthlySpendingsDiagram = () => {
       {loading ? (
         <div className="text-center">Ładowanie...</div>
       ) : (
-        <div className="m-4 rounded-xl bg-[#548c9b] p-2">
+        <div
+          style={{
+            boxShadow: '0px 4px 12.3px 0px rgba(0, 0, 0, 0.25)',
+          }}
+          className="m-4 rounded-xl bg-[#FFF] p-2"
+        >
           <h3 className="p-2 text-center text-2xl">Miesięczne wydatki</h3>
           {chartData.labels.length > 0 ? (
             <div className="relative">

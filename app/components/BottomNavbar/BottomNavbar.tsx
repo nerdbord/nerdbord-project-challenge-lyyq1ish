@@ -15,10 +15,10 @@ const BottomNavbar = () => {
 
   return (
     <div className="">
-      <ul className="flex items-center justify-between self-stretch bg-[#EEEBEB] p-3 pb-4 text-[12px]">
+      <ul className="flex items-center justify-between self-stretch bg-[#FFF] p-3 pb-4 text-[12px]">
         <li>
           <Link
-            className={`flex flex-col items-center px-2 py-1 ${pathname === '/homepage' ? 'rounded-lg bg-[#fff]' : ''}`}
+            className={`flex flex-col items-center px-2 py-1 ${pathname === '/homepage' ? 'border-b-2 border-[#3F5FE3] bg-[#fff]' : ''}`}
             href="/homepage"
           >
             <StatsIcons />
@@ -27,7 +27,7 @@ const BottomNavbar = () => {
         </li>
         <li>
           <Link
-            className={`flex flex-col items-center px-2 py-1 ${pathname === '/spendings' ? 'rounded-lg bg-[#fff]' : ''}`}
+            className={`flex flex-col items-center px-2 py-1 ${pathname === '/spendings' ? 'border-b-2 border-[#3F5FE3] bg-[#fff]' : ''}`}
             href="/spendings"
           >
             <Spendings />
@@ -36,7 +36,7 @@ const BottomNavbar = () => {
         </li>
         <li className="">
           <Link
-            className={`flex flex-col items-center px-2 py-1 ${pathname === '/dashboard' ? 'rounded-lg bg-[#fff]' : ''}`}
+            className={`flex flex-col items-center px-2 py-1 ${pathname === '/dashboard' ? 'border-b-2 border-[#3F5FE3] bg-[#fff]' : ''}`}
             href="/dashboard"
           >
             <PlusIcon />
@@ -45,7 +45,7 @@ const BottomNavbar = () => {
         </li>
         <li>
           <Link
-            className={`flex flex-col items-center px-2 py-1 ${pathname === '/profile' ? 'rounded-lg bg-[#fff]' : ''}`}
+            className={`flex flex-col items-center px-2 py-1 ${pathname === '/profile' ? 'border-b-2 border-[#3F5FE3] bg-[#fff]' : ''}`}
             href="/profile"
           >
             <Profile />
@@ -54,7 +54,7 @@ const BottomNavbar = () => {
         </li>
         <li>
           <Link
-            className={`flex flex-col items-center px-2 py-1 ${pathname === '/categories' ? 'rounded-lg bg-[#fff]' : ''}`}
+            className={`flex flex-col items-center px-2 py-1 ${pathname === '/categories' ? 'border-b-2 border-[#3F5FE3] bg-[#fff]' : ''}`}
             href="/categories"
           >
             <Categories />
