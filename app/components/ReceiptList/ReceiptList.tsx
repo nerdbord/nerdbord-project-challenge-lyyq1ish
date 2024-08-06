@@ -50,6 +50,10 @@ const CATEGORY_ICONS: { [key: string]: any } = {
   Inne: faQuestion,
 }
 
+interface MonthlyExpenses {
+  [key: string]: number
+}
+
 export default function ReceiptList() {
   const [, setReceipts] = useState<Receipt[]>([])
   const [filteredReceipts, setFilteredReceipts] = useState<Receipt[]>([])
@@ -60,14 +64,9 @@ export default function ReceiptList() {
     async function fetchReceipts() {
       try {
         const fetchedReceipts = await getReceiptsForUser()
-        const sortedReceipts = fetchedReceipts.sort((a, b) => {
-          if (!a.date) return -1
-          if (!b.date) return 1
-          return new Date(b.date).getTime() - new Date(a.date).getTime()
-        })
-        setReceipts(sortedReceipts)
-        setFilteredReceipts(sortedReceipts)
-        console.log('Fetched Receipts:', sortedReceipts)
+        setReceipts(fetchedReceipts)
+        setFilteredReceipts(fetchedReceipts)
+        console.log('Fetched Receipts:', fetchedReceipts)
       } catch (error) {
         console.error('Error fetching receipts:', error)
       } finally {
@@ -105,16 +104,34 @@ export default function ReceiptList() {
     document.body.removeChild(link)
   }
 
+  const processReceipts = (receipts: Receipt[]) => {
+    const monthlyExpenses: MonthlyExpenses = {}
+    receipts.forEach((receipt) => {
+      const month = new Date(receipt.date || '').toLocaleString('default', {
+        month: 'short',
+        year: 'numeric',
+      })
+      const amount = parseFloat(receipt.total || '0') || 0
+      if (!monthlyExpenses[month]) {
+        monthlyExpenses[month] = 0
+      }
+      monthlyExpenses[month] += amount
+    })
+
+    const sortedReceipts = receipts.sort((a, b) => {
+      if (!a.date) return -1
+      if (!b.date) return 1
+      return new Date(b.date).getTime() - new Date(a.date).getTime()
+    })
+
+    setFilteredReceipts(sortedReceipts)
+  }
+
   return (
     <>
-      <div
-        style={{
-          boxShadow: '0px 4px 12.3px 0px rgba(0, 0, 0, 0.25)',
-        }}
-        className="m-4 rounded-xl bg-[#fff] py-4"
-      >
+      <div className="m-4 rounded-xl bg-[#EEEBEB] py-4">
         <div
-          className={`mb-1 flex items-center justify-around rounded-xl p-4 ${poppins.className}`}
+          className={`mb-1 flex items-center justify-around ${poppins.className}`}
         >
           <h4 className="text-[20px]">Moje wydatki</h4>
           <button onClick={exportToCSV} className="text-[14px]">
@@ -149,6 +166,10 @@ export default function ReceiptList() {
                       <div className="flex flex-col text-[12px]">
                         <p>{receipt.shop}</p>
                         <p>{receipt.date}</p>
+                        <div className="my-1">
+                          <p>Numer paragonu:</p>
+                          <p>{receipt.receiptNumber}</p>
+                        </div>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
