@@ -50,10 +50,6 @@ const CATEGORY_ICONS: { [key: string]: any } = {
   Inne: faQuestion,
 }
 
-interface MonthlyExpenses {
-  [key: string]: number
-}
-
 export default function ReceiptList() {
   const [, setReceipts] = useState<Receipt[]>([])
   const [filteredReceipts, setFilteredReceipts] = useState<Receipt[]>([])
@@ -104,29 +100,6 @@ export default function ReceiptList() {
     document.body.removeChild(link)
   }
 
-  const processReceipts = (receipts: Receipt[]) => {
-    const monthlyExpenses: MonthlyExpenses = {}
-    receipts.forEach((receipt) => {
-      const month = new Date(receipt.date || '').toLocaleString('default', {
-        month: 'short',
-        year: 'numeric',
-      })
-      const amount = parseFloat(receipt.total || '0') || 0
-      if (!monthlyExpenses[month]) {
-        monthlyExpenses[month] = 0
-      }
-      monthlyExpenses[month] += amount
-    })
-
-    const sortedReceipts = receipts.sort((a, b) => {
-      if (!a.date) return -1
-      if (!b.date) return 1
-      return new Date(b.date).getTime() - new Date(a.date).getTime()
-    })
-
-    setFilteredReceipts(sortedReceipts)
-  }
-
   return (
     <>
       <div className="m-4 rounded-xl bg-[#EEEBEB] py-4">
@@ -147,42 +120,48 @@ export default function ReceiptList() {
           <div className="py-4 text-center">Brak paragonów do wyświetlenia</div>
         ) : (
           <ul>
-            {filteredReceipts.map((receipt, index) => (
-              <li
-                key={receipt.id}
-                className="cursor-pointer"
-                onClick={() => handleReceiptClick(receipt.id)}
-              >
-                <div className="flex w-full items-center gap-6 p-4">
-                  <div className="flex w-12 justify-center">
-                    <FontAwesomeIcon
-                      icon={CATEGORY_ICONS[receipt.category || 'Inne']}
-                      className="text-xl"
-                    />
-                  </div>
-                  <div className="flex w-full justify-between">
-                    <div className="text-start">
-                      <p className="font-semibold">{receipt.category}</p>
-                      <div className="flex flex-col text-[12px]">
-                        <p>{receipt.shop}</p>
-                        <p>{receipt.date}</p>
-                        <div className="my-1">
-                          <p>Numer paragonu:</p>
-                          <p>{receipt.receiptNumber}</p>
+            {filteredReceipts
+              .sort((a, b) => {
+                if (!a.date) return -1
+                if (!b.date) return 1
+                return new Date(b.date).getTime() - new Date(a.date).getTime()
+              })
+              .map((receipt, index) => (
+                <li
+                  key={receipt.id}
+                  className="cursor-pointer"
+                  onClick={() => handleReceiptClick(receipt.id)}
+                >
+                  <div className="flex w-full items-center gap-6 p-4">
+                    <div className="flex w-12 justify-center">
+                      <FontAwesomeIcon
+                        icon={CATEGORY_ICONS[receipt.category || 'Inne']}
+                        className="text-xl"
+                      />
+                    </div>
+                    <div className="flex w-full justify-between">
+                      <div className="text-start">
+                        <p className="font-semibold">{receipt.category}</p>
+                        <div className="flex flex-col text-[12px]">
+                          <p>{receipt.shop}</p>
+                          <p>{receipt.date}</p>
+                          <div className="my-1">
+                            <p>Numer paragonu:</p>
+                            <p>{receipt.receiptNumber}</p>
+                          </div>
                         </div>
                       </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <p>{receipt.total} zł</p>
-                      <FrontArrow />
+                      <div className="flex items-center gap-2">
+                        <p>{receipt.total} zł</p>
+                        <FrontArrow />
+                      </div>
                     </div>
                   </div>
-                </div>
-                {index < filteredReceipts.length - 1 && (
-                  <hr className="h-[2px] w-full bg-[#DBDBDB]" />
-                )}
-              </li>
-            ))}
+                  {index < filteredReceipts.length - 1 && (
+                    <hr className="h-[2px] w-full bg-[#DBDBDB]" />
+                  )}
+                </li>
+              ))}
           </ul>
         )}
       </div>
