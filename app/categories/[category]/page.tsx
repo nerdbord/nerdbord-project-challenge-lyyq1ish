@@ -1,7 +1,7 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import { useRouter } from 'next/navigation'
+import React, { useEffect, useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
 import { getReceiptsForUser } from '@/app/actions/receiptActions'
 import { Poppins } from 'next/font/google'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -19,8 +19,8 @@ import {
   faPalette,
   faQuestion,
 } from '@fortawesome/free-solid-svg-icons'
-import { ExportIcon, FrontArrow } from '../Icons/Icons'
-import Papa from 'papaparse'
+import { FrontArrow } from '@/app/components/Icons/Icons'
+import TopNavbar from '@/app/components/TopNavbar/TopNavbar'
 
 interface Receipt {
   id: string
@@ -50,80 +50,53 @@ const CATEGORY_ICONS: { [key: string]: any } = {
   Inne: faQuestion,
 }
 
-export default function ReceiptList() {
-  const [, setReceipts] = useState<Receipt[]>([])
-  const [filteredReceipts, setFilteredReceipts] = useState<Receipt[]>([])
+const CategoryReceipts = () => {
+  const [receipts, setReceipts] = useState<Receipt[]>([])
   const [loading, setLoading] = useState<boolean>(true)
   const router = useRouter()
+  const pathname = usePathname()
+  const category = decodeURIComponent(pathname.split('/').pop() || '')
 
   useEffect(() => {
-    async function fetchReceipts() {
+    const fetchReceipts = async () => {
       try {
-        const fetchedReceipts = await getReceiptsForUser()
-        setReceipts(fetchedReceipts)
-        setFilteredReceipts(fetchedReceipts)
-        console.log('Fetched Receipts:', fetchedReceipts)
+        const allReceipts = await getReceiptsForUser()
+        const filteredReceipts = allReceipts.filter(
+          (receipt) => receipt.category === category
+        )
+        setReceipts(filteredReceipts)
       } catch (error) {
         console.error('Error fetching receipts:', error)
       } finally {
         setLoading(false)
       }
     }
-    fetchReceipts()
-  }, [])
+    if (category) fetchReceipts()
+  }, [category])
 
   const handleReceiptClick = (receiptId: string) => {
     router.push(`/receipt/${receiptId}`)
   }
 
-  const exportToCSV = () => {
-    const data = filteredReceipts.map((receipt, index) => ({
-      'L.P': index + 1,
-      Kwota: receipt.total,
-      'Nazwa Sklepu': receipt.shop,
-      Kategoria: receipt.category,
-      Data: receipt.date,
-      'Numer paragonu': receipt.receiptNumber,
-      Opis: receipt.description,
-    }))
-
-    const csv = Papa.unparse(data, { header: true })
-
-    const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' })
-    const link = document.createElement('a')
-    const url = URL.createObjectURL(blob)
-    link.setAttribute('href', url)
-    link.setAttribute('download', 'export.csv')
-    link.style.visibility = 'hidden'
-    document.body.appendChild(link)
-    link.click()
-    document.body.removeChild(link)
-  }
-
   return (
-    <>
+    <div className="p-2">
+      <TopNavbar backIconHref="categories" position="block" />
       <div className="m-4 rounded-xl bg-[#EEEBEB] py-4">
         <div
           className={`mb-1 flex items-center justify-around ${poppins.className}`}
         >
-          <h4 className="text-[20px]">Moje wydatki</h4>
-          <button onClick={exportToCSV} className="text-[14px]">
-            <div className="flex items-center gap-1">
-              Eksportuj
-              <ExportIcon />
-            </div>
-          </button>
+          <h4 className="mb-4 text-[20px]">Paragony z kategorii: {category}</h4>
         </div>
         {loading ? (
           <div className="py-4 text-center">Ładowanie...</div>
-        ) : filteredReceipts.length === 0 ? (
+        ) : receipts.length === 0 ? (
           <div className="py-4 text-center">Brak paragonów do wyświetlenia</div>
         ) : (
-          <ul>
-            {filteredReceipts.map((receipt, index) => (
+          <ul className="space-y-4">
+            {receipts.map((receipt) => (
               <li
                 key={receipt.id}
-                className="cursor-pointer"
+                className="cursor-pointer rounded border p-4 hover:bg-gray-100"
                 onClick={() => handleReceiptClick(receipt.id)}
               >
                 <div className="flex w-full items-center gap-6 p-4">
@@ -151,14 +124,13 @@ export default function ReceiptList() {
                     </div>
                   </div>
                 </div>
-                {index < filteredReceipts.length - 1 && (
-                  <hr className="h-[2px] w-full bg-[#DBDBDB]" />
-                )}
               </li>
             ))}
           </ul>
         )}
       </div>
-    </>
+    </div>
   )
 }
+
+export default CategoryReceipts

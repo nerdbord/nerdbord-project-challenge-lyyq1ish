@@ -10,7 +10,6 @@ const spendings = () => {
         <CurrentSaldo />
         <ReceiptList />
       </div>
-
       <BottomNavbar />
     </>
   )
