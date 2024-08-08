@@ -3,7 +3,7 @@ import Scanner from '../components/Scanner/Scanner'
 
 const page = () => {
   return (
-    <div>
+    <div className={`w-full bg-[url('/receipt.jpeg')] bg-cover bg-center`}>
       <Scanner />
     </div>
   )

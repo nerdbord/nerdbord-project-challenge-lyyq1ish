@@ -14,7 +14,7 @@ const BottomNavbar = () => {
   const pathname = usePathname()
 
   return (
-    <div className="bg-[#fff]">
+    <div className="absolute bottom-0 w-full max-w-[393px] bg-[#fff]">
       <ul className="flex items-center justify-between self-stretch bg-[#FFF] p-3 pb-4 text-[12px]">
         <li>
           <Link

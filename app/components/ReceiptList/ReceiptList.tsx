@@ -102,9 +102,14 @@ export default function ReceiptList() {
 
   return (
     <>
-      <div className="m-4 rounded-xl bg-[#EEEBEB] py-4">
+      <div
+        style={{
+          boxShadow: '0px 4px 12.3px 0px rgba(0, 0, 0, 0.25)',
+        }}
+        className="m-4 rounded-xl bg-[#fff] py-4"
+      >
         <div
-          className={`mb-1 flex items-center justify-around ${poppins.className}`}
+          className={`mb-6 flex items-center justify-around ${poppins.className}`}
         >
           <h4 className="text-[20px]">Moje wydatki</h4>
           <button onClick={exportToCSV} className="text-[14px]">
@@ -119,7 +124,7 @@ export default function ReceiptList() {
         ) : filteredReceipts.length === 0 ? (
           <div className="py-4 text-center">Brak paragonów do wyświetlenia</div>
         ) : (
-          <ul>
+          <ul className="">
             {filteredReceipts
               .sort((a, b) => {
                 if (!a.date) return -1
@@ -145,10 +150,7 @@ export default function ReceiptList() {
                         <div className="flex flex-col text-[12px]">
                           <p>{receipt.shop}</p>
                           <p>{receipt.date}</p>
-                          <div className="my-1">
-                            <p>Numer paragonu:</p>
-                            <p>{receipt.receiptNumber}</p>
-                          </div>
+                          <div className="my-1"></div>
                         </div>
                       </div>
                       <div className="flex items-center gap-2">

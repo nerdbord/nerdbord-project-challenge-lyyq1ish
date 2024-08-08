@@ -5,7 +5,7 @@ import CategoriesList from '../components/CategoriesList/CategoriesList'
 const categories = () => {
   return (
     <div>
-      <div className="min-h-[88vh] bg-[#fff]">
+      <div className="pb-[120px]">
         <CategoriesList />
       </div>
       <BottomNavbar />
