@@ -89,16 +89,18 @@ export default function Scanner() {
   }
 
   const handleSaveReceipt = async () => {
-    if (!result?.SUMA || !result?.KATEGORIA || !result?.DATA) {
+    if (!result?.SUMA || !result?.KATEGORIA) {
       setSuccessMessage(true)
       return
     }
 
     try {
-      const savedReceiptId = await saveAnalyzedReceipt({
+      const payload = {
         ...result,
         image: sendImage ? preview : '',
-      })
+      }
+
+      const savedReceiptId = await saveAnalyzedReceipt(payload)
       console.log('Receipt saved with ID:', savedReceiptId)
 
       setShowFinalPage(true)
@@ -106,7 +108,6 @@ export default function Scanner() {
       console.error('Failed to save receipt:', error)
     }
   }
-
   const toBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader()
@@ -134,13 +135,11 @@ export default function Scanner() {
                     <img
                       //@ts-ignore
                       src={preview}
-                      className="h-[418px] w-[360px] rounded-xl border-2 border-dashed border-black"
+                      className="mb-6 h-[418px] w-[360px] rounded-xl border-2 border-dashed border-black"
                       alt=""
                     />
                   </div>
-                  <p className="mb-5 text-[12px] text-[#515151]">
-                    Zrób zdjęcie paragonu poprzez umieszczenie go w ramce.
-                  </p>
+
                   <div className="flex w-[100%] flex-col gap-2">
                     {preview === null ? (
                       <>
@@ -269,15 +268,16 @@ export default function Scanner() {
                     <div className="flex flex-col">
                       <label>Data*</label>
                       <input
-                        className="rounded-xl border border-black p-[12px]"
-                        type="text"
+                        className={`rounded-xl border p-[12px] ${successMessage && !result?.KATEGORIA && 'border-[red]'}`}
+                        required
+                        type="date"
                         name="DATA"
                         value={result.DATA || ''}
                         onChange={handleInputChange}
                       />
                     </div>
                     <div className="flex flex-col">
-                      <label>Numer paragonu*</label>
+                      <label>Numer paragonu</label>
                       <input
                         className="rounded-xl border border-black p-[12px]"
                         type="text"
@@ -290,11 +290,12 @@ export default function Scanner() {
                       <label>Opis</label>
                       <textarea
                         name="OPIS"
-                        value={result.OPIS || 'wprowadź opis'}
+                        value={result.OPIS || ''}
                         className="h-[128px] rounded-xl border border-black p-2"
                         onChange={handleInputChange}
                         rows={4}
                         cols={50}
+                        placeholder="Cotygodniowe zakupy"
                       />
                     </div>
                     {preview ? (
@@ -303,16 +304,17 @@ export default function Scanner() {
                         <img
                           //@ts-ignore
                           src={preview}
-                          className="h-[418px] w-[360px] border-0 border-none"
+                          className="h-[418px] w-[360px] border-none p-4"
                           alt=""
                         />
-                        <div className="mb-10 p-1">
+                        <div className="flex items-center">
                           <label className="mr-5">
                             Zapisz zdjęcie jako załącznik
                           </label>
                           <input
                             type="checkbox"
                             checked={sendImage}
+                            className="toggle"
                             onChange={(e) => setSendImage(e.target.checked)}
                           />
                         </div>
@@ -349,7 +351,7 @@ export default function Scanner() {
             )}
           </div>
         ) : (
-          <SuccesPage image={preview || ''} />
+          <SuccesPage image={sendImage ? preview || '' : ''} />
         )}
       </div>
     </>
