@@ -18,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <ClerkProvider localization={plPL}>
-      <html lang="en">
+      <html lang="pl" data-theme="light" className="bg-[#312d2d]">
         <body
           className={`${lato.className} mx-auto min-h-screen w-[393px] bg-[#F6F5FA] text-[#383838]`}
         >

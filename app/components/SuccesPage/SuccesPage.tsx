@@ -9,7 +9,7 @@ interface Props {
 
 const SuccesPage = ({ image }: Props) => {
   return (
-    <div className="flex h-screen flex-col items-center justify-center gap-8">
+    <div className="flex flex-col items-center justify-center gap-8">
       <h3 className="text-center text-4xl">Paragon dodany</h3>
       {image !== '' ? (
         <img
@@ -24,7 +24,7 @@ const SuccesPage = ({ image }: Props) => {
       )}
       <div className="flex w-full flex-col gap-3">
         <Link
-          className="w-[100%] rounded-xl bg-[#383838] py-4 text-center text-white"
+          className="w-[100%] rounded-xl bg-[#3F5FE3] py-4 text-center text-white"
           onClick={() => {
             window.location.reload()
           }}

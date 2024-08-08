@@ -92,32 +92,30 @@ export default function SingleReceipt() {
           <p>Data</p>
           <p className="text-[18px] text-[#383838]">{receipt.date}</p>
         </div>
-        <hr className="h-[2px] bg-[#DBDBDB]" />
-        <div className="p-2 text-[#8E8E8E]">
-          <p>Numer paragonu</p>
-          <p className="text-[18px] text-[#383838]">{receipt.receiptNumber}</p>
-        </div>
+
         <hr className="h-[2px] bg-[#DBDBDB]" />
         <div className="p-2 text-[#8E8E8E]">
           <p>Opis</p>
           <p className="text-[18px] text-[#383838]">{receipt.description}</p>
         </div>
       </div>
-      <div
-        style={{
-          boxShadow: '0px 4px 12.3px 0px rgba(0, 0, 0, 0.25)',
-        }}
-        className="m-4 rounded-xl bg-[#FFF] p-4"
-      >
-        <p>Zdjęcie</p>
-        {receipt.image && (
-          <img
-            src={receipt.image}
-            alt="Full receipt"
-            className="mt-4 h-auto max-w-full"
-          />
-        )}
-      </div>
+      {receipt.image && (
+        <div
+          style={{
+            boxShadow: '0px 4px 12.3px 0px rgba(0, 0, 0, 0.25)',
+          }}
+          className="m-4 rounded-xl bg-[#FFF] p-4"
+        >
+          <>
+            <p>Zdjęcie</p>
+            <img
+              src={receipt.image}
+              alt="Full receipt"
+              className="mt-4 h-auto max-w-full"
+            />
+          </>
+        </div>
+      )}
       <div className="mx-4 flex flex-col gap-2 pb-8">
         <button
           className="w-[100%] rounded-xl border border-[#383838] py-4 text-center"

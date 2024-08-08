@@ -38,7 +38,7 @@ export async function analyzeReceipt(base64String: string): Promise<any> {
               role: 'system',
               content: `Jesteś asystentem analizującym paragony. Podaj informacje w następującym formacie JSON: 
               {
-                "DATA": "DD.MM.YYYY", 
+                "DATA": "YYYY-MM-DD", 
                 "SKLEP": "tylko nazwa sklepu czyli jak masz Rossmann SDP SP. Z O.O. to tylko Rossmann ", 
                 "SUMA": "kwota całkowita",
                 "WALUTA": "waluta",
