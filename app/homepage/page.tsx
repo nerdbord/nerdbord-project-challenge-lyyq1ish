@@ -9,7 +9,7 @@ import MonthlySpendingsDiagram from '../components/MonthlySpendingsDiagram/Month
 const page = () => {
   return (
     <>
-      <div className="min-h-[88vh] bg-[#F6F5FA]">
+      <div className="relative bg-[#F6F5FA] pb-[120px]">
         <CurrentSaldo />
         <MonthlySpendingsDiagram />
       </div>

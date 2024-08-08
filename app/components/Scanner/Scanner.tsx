@@ -135,7 +135,7 @@ export default function Scanner() {
                     <img
                       //@ts-ignore
                       src={preview}
-                      className="mb-6 h-[418px] w-[360px] rounded-xl border-2 border-dashed border-black"
+                      className="mb-6 h-[418px] w-[360px] rounded-lg border-4 border-dashed border-[#3f5fe3]"
                       alt=""
                     />
                   </div>
@@ -174,13 +174,13 @@ export default function Scanner() {
 
             {!result && (
               <div className="relative my-4 flex w-full items-center justify-center">
-                <div className="flex-grow border-t border-black"></div>
+                <div className="flex-grow border-t border-white"></div>
                 <span
-                  className={`${poppins.className} mx-4 text-center text-[16px] text-[#000]`}
+                  className={`${poppins.className} mx-4 text-center text-[16px] text-[#fff]`}
                 >
                   lub
                 </span>
-                <div className="flex-grow border-t border-black"></div>
+                <div className="flex-grow border-t border-[#fff]"></div>
               </div>
             )}
 
@@ -190,7 +190,7 @@ export default function Scanner() {
                   //@ts-ignore
                   setResult(true)
                 }}
-                className="w-[100%] rounded-xl border border-[#383838] py-4 text-center"
+                className="w-[100%] rounded-xl border bg-[#fff] py-4 text-center"
                 disabled={loading}
               >
                 Dodaj ręcznie
@@ -210,7 +210,7 @@ export default function Scanner() {
               <div className="mt-16 flex h-full flex-col">
                 <div>
                   <button
-                    className="absolute left-5 top-6 z-10"
+                    className="absolute left-5 top-9 z-10"
                     onClick={() => {
                       setResult(null)
                       setPreview(null)
@@ -228,16 +228,28 @@ export default function Scanner() {
                 )}
                 <div>
                   <div className="flex max-w-[364px] flex-col gap-3">
-                    <div className="flex flex-col">
-                      <label>Kwota*</label>
-                      <input
-                        className={`rounded-xl border p-[12px] ${successMessage && !result?.SUMA && 'border-[red]'}`}
-                        type="string"
-                        name="SUMA"
-                        value={result.SUMA || ''}
-                        onChange={handleInputChange}
-                        required
-                      />
+                    <div className="relative flex justify-between">
+                      <div className="flex w-[48%] flex-col">
+                        <label>Kwota*</label>
+                        <input
+                          className={`rounded-xl border p-[12px] ${successMessage && !result?.SUMA && 'border-[red]'}`}
+                          type="string"
+                          name="SUMA"
+                          value={result.SUMA || ''}
+                          onChange={handleInputChange}
+                          placeholder="21,37"
+                        />
+                      </div>
+                      <div className="flex w-[48%] flex-col">
+                        <label>Data*</label>
+                        <input
+                          className={`rounded-xl border p-[12px] ${successMessage && !result?.KATEGORIA && 'border-[red]'}`}
+                          type="date"
+                          name="DATA"
+                          value={result.DATA || ''}
+                          onChange={handleInputChange}
+                        />
+                      </div>
                     </div>
                     <div className="flex flex-col">
                       <label>Nazwa sklepu*</label>
@@ -247,6 +259,7 @@ export default function Scanner() {
                         name="SKLEP"
                         value={result.SKLEP || ''}
                         onChange={handleInputChange}
+                        placeholder="Lidronka"
                       />
                     </div>
                     <div className="flex flex-col">
@@ -257,24 +270,15 @@ export default function Scanner() {
                         value={result.KATEGORIA || ''}
                         onChange={handleInputChange}
                       >
-                        <option value="">Wybierz kategorię</option>
+                        <option disabled value="">
+                          Wybierz kategorię
+                        </option>
                         {RECEIPT_CATEGORIES.map((category) => (
                           <option key={category} value={category}>
                             {category}
                           </option>
                         ))}
                       </select>
-                    </div>
-                    <div className="flex flex-col">
-                      <label>Data*</label>
-                      <input
-                        className={`rounded-xl border p-[12px] ${successMessage && !result?.KATEGORIA && 'border-[red]'}`}
-                        required
-                        type="date"
-                        name="DATA"
-                        value={result.DATA || ''}
-                        onChange={handleInputChange}
-                      />
                     </div>
                     <div className="flex flex-col">
                       <label>Numer paragonu</label>
@@ -284,6 +288,7 @@ export default function Scanner() {
                         name="NUMER_PARAGONU"
                         value={result.NUMER_PARAGONU || ''}
                         onChange={handleInputChange}
+                        placeholder="#7648-2137"
                       />
                     </div>
                     <div className="flex flex-col">
@@ -291,7 +296,7 @@ export default function Scanner() {
                       <textarea
                         name="OPIS"
                         value={result.OPIS || ''}
-                        className="h-[128px] rounded-xl border border-black p-2"
+                        className="h-[128px] rounded-xl border border-black p-3"
                         onChange={handleInputChange}
                         rows={4}
                         cols={50}
