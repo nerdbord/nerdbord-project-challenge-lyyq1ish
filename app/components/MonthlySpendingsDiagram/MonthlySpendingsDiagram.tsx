@@ -5,7 +5,7 @@ import { Doughnut } from 'react-chartjs-2'
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from 'chart.js'
 import ChartDataLabels from 'chartjs-plugin-datalabels'
 import 'tailwindcss/tailwind.css'
-import { getReceiptsForUser } from '@/app/actions/receiptActions'
+import { getReceiptsForUser } from '../../actions/receiptActions'
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels)
 /*

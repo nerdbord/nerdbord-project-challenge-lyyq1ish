@@ -92,30 +92,19 @@ export async function analyzeReceipt(base64String: string): Promise<any> {
     throw new Error('Error analyzing receipt')
   }
 }
-
 export async function saveAnalyzedReceipt(receiptData: any): Promise<string> {
   try {
     const user = await currentUser()
-    if (!user || !user.id)
-      throw new Error('User not authenticated or userId not found')
+    if (!user || !user.id) throw new Error('User not authenticated or userId not found')
 
-    // Sprawdzenie, czy użytkownik już istnieje w bazie danych
-    const existingUser = await prisma.user.findUnique({
-      where: { id: user.id },
+    let category = await prisma.category.findFirst({
+      where: { name: receiptData.KATEGORIA }
     })
-
-    // Jeśli użytkownik nie istnieje, zapisz go w bazie danych
-    if (!existingUser) {
-      await prisma.user.create({
-        data: {
-          id: user.id,
-          email: user.emailAddresses[0].emailAddress,
-        },
+    if (!category) {
+      category = await prisma.category.findFirst({
+        where: { name: 'Inne' }
       })
     }
-
-    console.log('User ID:', user.id)
-    console.log('Receipt Data:', receiptData)
 
     const receipt = await prisma.receipt.create({
       data: {
@@ -124,9 +113,9 @@ export async function saveAnalyzedReceipt(receiptData: any): Promise<string> {
         total: receiptData.SUMA || 'N/A',
         receiptNumber: receiptData.NUMER_PARAGONU || 'N/A',
         description: receiptData.OPIS || 'N/A',
-        category: receiptData.KATEGORIA || 'Inne',
+        categoryId: category!.id,
         image: receiptData.image || '',
-        userId: user.id, // Dodanie userId
+        userId: user.id,
       },
     })
 
@@ -134,12 +123,9 @@ export async function saveAnalyzedReceipt(receiptData: any): Promise<string> {
     return receipt.id
   } catch (error: any) {
     console.error('Failed to save analyzed receipt:', error.message)
-    console.error('Error details:', error.meta)
     throw new Error('Failed to save analyzed receipt')
   }
 }
-
-// ... other functions ...
 
 export async function getReceiptsForUser() {
   try {

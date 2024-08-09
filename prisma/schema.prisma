@@ -27,9 +27,20 @@ model Receipt {
   shop          String?
   total         String?
   receiptNumber String?
-  category      String?
+  category      Category @relation(fields: [categoryId], references: [id])
+  categoryId    String
   description   String?
   createdAt     DateTime @default(now())
   userId        String
   user          User     @relation("UserReceipts", fields: [userId], references: [id])
 }
+
+model Category {
+  id        String   @id @default(cuid())
+  name      String   @unique
+  icon      String
+  color     String
+  receipts  Receipt[]
+  icon      Icon[]
+}
+

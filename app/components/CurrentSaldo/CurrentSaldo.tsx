@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState, useEffect } from 'react'
-import { getTotalSpent } from '@/app/actions/receiptActions'
+import { getTotalSpent } from '../../actions/receiptActions'
 
 const CurrentSaldo = () => {
   const [total, setTotal] = useState<number | null>(null)
