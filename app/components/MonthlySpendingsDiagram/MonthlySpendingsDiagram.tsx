@@ -8,28 +8,6 @@ import 'tailwindcss/tailwind.css'
 import { getReceiptsForUser } from '../../actions/receiptActions'
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels)
-/*
-#F27459,Pomarańczowy
-#F29882,Jasny pomarańczowy
-#E56B5A,Czerwono-pomarańczowy
-#F2D17D,Żółty
-#F2C563,Cytrynowy
-#F2B549,Złoty
-#82F298,Limonkowy
-#72D687,Jasnozielony
-#63B978,Oliwkowy
-#82B5F2,Jasnoniebieski
-#7DBEF2,Błękitny
-#78A8D9,Szaroniebieski
-#B582F2,Lawendowy
-#A178D9,Liliowy
-#9172C1,Fioletowy
-#EEEEEE,Bardzo jasnoszary
-#D4D4D4,Jasnoszary
-#B9B9B9,Szary
-#9E9E9E,Ciemnoszary
-#848484,Bardzo ciemnoszary
-*/
 
 const RECEIPT_CATEGORIES = [
   { category: 'Spożywcze', color: '#49D1B5' },

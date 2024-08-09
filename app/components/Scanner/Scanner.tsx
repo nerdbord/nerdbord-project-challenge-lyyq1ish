@@ -132,11 +132,9 @@ export default function Scanner() {
                 </h1>
                 <div>
                   <div className="mb-6 h-[418px] w-[360px] rounded-lg border-4 border-dashed border-[#3f5fe3]">
-                    {preview &&
-                    <img
-                      src={preview || ''}
-                      alt="uploaded image preview"
-                    />}
+                    {preview && (
+                      <img src={preview || ''} alt="uploaded image preview" />
+                    )}
                   </div>
 
                   <div className="flex w-[100%] flex-col gap-2">
@@ -186,7 +184,7 @@ export default function Scanner() {
             {!result && (
               <button
                 onClick={() => {
-                  setResult({} as ReceiptData);
+                  setResult({} as ReceiptData)
                 }}
                 className="w-[100%] rounded-xl border bg-[#fff] py-4 text-center"
                 disabled={loading}

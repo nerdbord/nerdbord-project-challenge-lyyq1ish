@@ -1,33 +1,27 @@
 'use client'
-
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
-import { getReceiptById, deleteReceipt } from '@/app/actions/receiptActions'
+import {
+  getReceiptById,
+  deleteReceipt,
+} from '../../../app/actions/receiptActions'
 import TopNavbar from '../TopNavbar/TopNavbar'
 import Link from 'next/link'
 import { Poppins } from 'next/font/google'
-
-interface Receipt {
-  id: string
-  image: string | null
-  date: string | null
-  shop: string | null
-  total: string | null
-  receiptNumber: string | null
-  category: string | null
-  description: string | null
-}
+import { Receipt } from '@prisma/client'
 
 const poppins = Poppins({ weight: '400', subsets: ['latin'] })
 
 export default function SingleReceipt() {
   const [receipt, setReceipt] = useState<Receipt | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
   const router = useRouter()
   const { id } = useParams()
 
   useEffect(() => {
     async function fetchReceipt() {
+      setLoading(true)
       try {
         if (id) {
           const fetchedReceipt = await getReceiptById(id as string)
@@ -35,6 +29,9 @@ export default function SingleReceipt() {
         }
       } catch (error) {
         console.error('Error fetching receipt details:', error)
+        setError('Failed to load receipt details.')
+      } finally {
+        setLoading(false)
       }
     }
     fetchReceipt()
@@ -49,13 +46,22 @@ export default function SingleReceipt() {
       }
     } catch (error) {
       console.error('Error deleting receipt:', error)
+      setError('Failed to delete the receipt.')
     } finally {
       setLoading(false)
     }
   }
 
-  if (!receipt) {
+  if (loading) {
     return <div>Loading...</div>
+  }
+
+  if (error) {
+    return <div>{error}</div>
+  }
+
+  if (!receipt) {
+    return <div>No receipt found</div>
   }
 
   return (
@@ -75,28 +81,34 @@ export default function SingleReceipt() {
         </Link>
         <div className="p-2 text-[#8E8E8E]">
           <p>Kwota</p>
-          <p className="text-[18px] text-[#383838]">{receipt.total} zł</p>
+          <p className="text-[18px] text-[#383838]">
+            {receipt.total || 'N/A'} zł
+          </p>
         </div>
         <hr className="h-[2px] bg-[#DBDBDB]" />
         <div className="p-2 text-[#8E8E8E]">
           <p>Nazwa sklepu</p>
-          <p className="text-[18px] text-[#383838]">{receipt.shop}</p>
+          <p className="text-[18px] text-[#383838]">{receipt.shop || 'N/A'}</p>
         </div>
         <hr className="h-[2px] bg-[#DBDBDB]" />
         <div className="p-2 text-[#8E8E8E]">
           <p>Kategoria</p>
-          <p className="text-[18px] text-[#383838]">{receipt.category}</p>
+          <p className="text-[18px] text-[#383838]">
+            {receipt.categoryId || 'N/A'}
+          </p>
         </div>
         <hr className="h-[2px] bg-[#DBDBDB]" />
         <div className="p-2 text-[#8E8E8E]">
           <p>Data</p>
-          <p className="text-[18px] text-[#383838]">{receipt.date}</p>
+          <p className="text-[18px] text-[#383838]">{receipt.date || 'N/A'}</p>
         </div>
 
         <hr className="h-[2px] bg-[#DBDBDB]" />
         <div className="p-2 text-[#8E8E8E]">
           <p>Opis</p>
-          <p className="text-[18px] text-[#383838]">{receipt.description}</p>
+          <p className="text-[18px] text-[#383838]">
+            {receipt.description || 'N/A'}
+          </p>
         </div>
       </div>
       {receipt.image && (

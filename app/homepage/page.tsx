@@ -11,6 +11,7 @@ const page = () => {
     <>
       <div className="relative bg-[#F6F5FA] pb-[120px]">
         <CurrentSaldo />
+
         <MonthlySpendingsDiagram />
       </div>
       <BottomNavbar />

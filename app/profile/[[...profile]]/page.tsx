@@ -1,7 +1,7 @@
 import React from 'react'
 import BottomNavbar from '../../components/BottomNavbar/BottomNavbar'
 import { SignOutButton } from '@clerk/nextjs'
-import CustomUserProfile from '@/app/components/CustomUserProfile/CustomUserProfile'
+import CustomUserProfile from '../../../app/components/CustomUserProfile/CustomUserProfile'
 
 const profile = () => {
   return (

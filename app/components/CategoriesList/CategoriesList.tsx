@@ -1,6 +1,11 @@
 'use client'
 import React, { useState, useEffect } from 'react'
-import { createCategory, fetchCategories, updateCategory, deleteCategory } from '../../actions/categoryActions'
+import {
+  createCategory,
+  fetchCategories,
+  updateCategory,
+  deleteCategory,
+} from '../../actions/categoryActions'
 import CategoryModal from './CategoryModal'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Category, ICONS, IconName } from './iconTypes'
@@ -14,11 +19,18 @@ const CategoriesList: React.FC = () => {
   const loadCategories = async () => {
     try {
       const fetchedCategories = await fetchCategories()
-      fetchedCategories.sort((a, b) => a.name.localeCompare(b.name))
-      //@ts-ignore
-      setCategories(fetchedCategories)
-      const recent = fetchedCategories.slice(0, 3)
-            //@ts-ignore
+
+      // Ensure icon is cast to IconName
+      const formattedCategories = fetchedCategories.map((category) => ({
+        ...category,
+        icon: category.icon as IconName,
+      }))
+
+      formattedCategories.sort((a, b) => a.name.localeCompare(b.name))
+
+      setCategories(formattedCategories)
+      const recent = formattedCategories.slice(0, 3)
+
       setRecentCategories(recent)
     } catch (error) {
       console.error('Failed to load categories:', error)
@@ -39,7 +51,11 @@ const CategoriesList: React.FC = () => {
     setIsModalOpen(true)
   }
 
-  const handleSaveCategory = async (name: string, icon: IconName, color: string) => {
+  const handleSaveCategory = async (
+    name: string,
+    icon: IconName,
+    color: string
+  ) => {
     try {
       if (modalData) {
         await updateCategory(modalData.id, name, icon, color)
@@ -65,19 +81,25 @@ const CategoriesList: React.FC = () => {
     }
   }
 
-  const groupedCategories: { [key: string]: Category[] } = categories.reduce((acc, category) => {
-    const firstLetter = category.name.charAt(0).toUpperCase()
-    if (!acc[firstLetter]) {
-      acc[firstLetter] = []
-    }
-    acc[firstLetter].push(category)
-    return acc
-  }, {} as { [key: string]: Category[] })
+  const groupedCategories: { [key: string]: Category[] } = categories.reduce(
+    (acc, category) => {
+      const firstLetter = category.name.charAt(0).toUpperCase()
+      if (!acc[firstLetter]) {
+        acc[firstLetter] = []
+      }
+      acc[firstLetter].push(category)
+      return acc
+    },
+    {} as { [key: string]: Category[] }
+  )
 
   return (
     <div className="mx-auto max-w-2xl p-4">
-      <h1 className="text-center text-2xl font-bold mb-4">Kategorie</h1>
-      <button onClick={handleAddCategory} className="bg-blue-500 text-white px-4 py-2 rounded mb-4">
+      <h1 className="mb-4 text-center text-2xl font-bold">Kategorie</h1>
+      <button
+        onClick={handleAddCategory}
+        className="mb-4 rounded bg-blue-500 px-4 py-2 text-white"
+      >
         Dodaj nową kategorię
       </button>
 
@@ -92,7 +114,10 @@ const CategoriesList: React.FC = () => {
                 onClick={() => handleEditCategory(category)}
               >
                 <div className="flex items-center space-x-3">
-                  <FontAwesomeIcon icon={ICONS[category.icon]} color={category.color} />
+                  <FontAwesomeIcon
+                    icon={ICONS[category.icon]}
+                    color={category.color}
+                  />
                   <span>{category.name}</span>
                 </div>
                 <button className="text-blue-500">Edytuj</button>
@@ -105,7 +130,7 @@ const CategoriesList: React.FC = () => {
       <div className="overflow-y-auto">
         {Object.entries(groupedCategories).map(([letter, categoryGroup]) => (
           <div key={letter}>
-            <h2 className="mt-4 mb-2 text-lg font-semibold">{letter}</h2>
+            <h2 className="mb-2 mt-4 text-lg font-semibold">{letter}</h2>
             <ul className="flex flex-col justify-center gap-3 space-y-2">
               {categoryGroup.map((category) => (
                 <li
@@ -114,7 +139,10 @@ const CategoriesList: React.FC = () => {
                   onClick={() => handleEditCategory(category)}
                 >
                   <div className="flex items-center space-x-3">
-                    <FontAwesomeIcon icon={ICONS[category.icon]} color={category.color} />
+                    <FontAwesomeIcon
+                      icon={ICONS[category.icon]}
+                      color={category.color}
+                    />
                     <span>{category.name}</span>
                   </div>
                   <button className="text-blue-500">Edytuj</button>

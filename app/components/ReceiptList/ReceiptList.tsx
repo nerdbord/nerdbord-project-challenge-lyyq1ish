@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { getReceiptsForUser } from '@/app/actions/receiptActions'
+import { getReceiptsForUser } from '../../../app/actions/receiptActions'
 import { Poppins } from 'next/font/google'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import {

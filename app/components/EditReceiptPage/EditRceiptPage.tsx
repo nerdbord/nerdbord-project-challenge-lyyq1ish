@@ -2,7 +2,10 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
-import { getReceiptById, updateReceipt } from '@/app/actions/receiptActions'
+import {
+  getReceiptById,
+  updateReceipt,
+} from '../../../app/actions/receiptActions'
 import { Poppins } from 'next/font/google'
 import Link from 'next/link'
 import TopNavbar from '../TopNavbar/TopNavbar'

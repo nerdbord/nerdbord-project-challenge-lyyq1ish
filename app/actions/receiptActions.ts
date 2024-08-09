@@ -95,14 +95,15 @@ export async function analyzeReceipt(base64String: string): Promise<any> {
 export async function saveAnalyzedReceipt(receiptData: any): Promise<string> {
   try {
     const user = await currentUser()
-    if (!user || !user.id) throw new Error('User not authenticated or userId not found')
+    if (!user || !user.id)
+      throw new Error('User not authenticated or userId not found')
 
     let category = await prisma.category.findFirst({
-      where: { name: receiptData.KATEGORIA }
+      where: { name: receiptData.KATEGORIA },
     })
     if (!category) {
       category = await prisma.category.findFirst({
-        where: { name: 'Inne' }
+        where: { name: 'Inne' },
       })
     }
 
