@@ -4,7 +4,7 @@ import { useState } from 'react'
 import {
   analyzeReceipt,
   saveAnalyzedReceipt,
-} from '../../actions/receiptActions'
+} from '../../../app/actions/receiptActions'
 import { Poppins } from 'next/font/google'
 import SuccesPage from '../SuccesPage/SuccesPage'
 import { BackIcon } from '../Icons/Icons'
@@ -39,7 +39,7 @@ const RECEIPT_CATEGORIES = [
 export default function Scanner() {
   const [result, setResult] = useState<ReceiptData | null>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
-  const [preview, setPreview] = useState<string | null>('')
+  const [preview, setPreview] = useState<string | null>(null)
   const [loading, setLoading] = useState<boolean>(false)
   const [sendImage, setSendImage] = useState<boolean>(false)
   const [successMessage, setSuccessMessage] = useState<boolean>(false)
@@ -68,7 +68,17 @@ export default function Scanner() {
     try {
       const base64String = await toBase64(selectedFile)
       const analysisResult = await analyzeReceipt(base64String)
-      setResult(analysisResult)
+      console.log(analysisResult)
+
+      if (analysisResult && !analysisResult.error) {
+        // Assuming analyzeReceipt returns the parsed JSON directly
+        setResult(analysisResult)
+      } else {
+        setResult({
+          OPIS:
+            analysisResult.error || 'No valid content found in the response',
+        })
+      }
     } catch (error) {
       console.error('Failed to analyze image:', error)
       setResult({ OPIS: 'Failed to analyze image' })
@@ -131,10 +141,13 @@ export default function Scanner() {
                   Zrób zdjęcie swojego paragonu.
                 </h1>
                 <div>
-                  <div className="mb-6 h-[418px] w-[360px] rounded-lg border-4 border-dashed border-[#3f5fe3]">
-                    {preview && (
-                      <img src={preview || ''} alt="uploaded image preview" />
-                    )}
+                  <div>
+                    <img
+                      //@ts-ignore
+                      src={preview}
+                      className="mb-6 h-[418px] w-[360px] rounded-lg border-4 border-dashed border-[#3f5fe3]"
+                      alt=""
+                    />
                   </div>
 
                   <div className="flex w-[100%] flex-col gap-2">
@@ -184,7 +197,8 @@ export default function Scanner() {
             {!result && (
               <button
                 onClick={() => {
-                  setResult({} as ReceiptData)
+                  //@ts-ignore
+                  setResult(true)
                 }}
                 className="w-[100%] rounded-xl border bg-[#fff] py-4 text-center"
                 disabled={loading}
@@ -303,6 +317,7 @@ export default function Scanner() {
                       <div>
                         <p>Zdjęcie</p>
                         <img
+                          //@ts-ignore
                           src={preview}
                           className="h-[418px] w-[360px] border-none p-4"
                           alt=""
@@ -351,7 +366,7 @@ export default function Scanner() {
             )}
           </div>
         ) : (
-          <SuccesPage image={sendImage ? preview || '' : ''} />
+          <SuccesPage />
         )}
       </div>
     </>

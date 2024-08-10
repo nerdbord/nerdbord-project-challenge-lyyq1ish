@@ -23,47 +23,38 @@ export async function analyzeReceipt(base64String: string): Promise<any> {
   console.log('Starting receipt analysis')
 
   try {
-    const response = await fetch(
-      'https://training.nerdbord.io/api/v1/openai/chat/completions',
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${process.env.GPT_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          model: 'gpt-4o',
-          messages: [
+    const response = await fetch('https://api.openai.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${process.env.GPT_API_KEY}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        model: 'gpt-4o',
+        messages: [
+          {
+            role: 'system',
+            content: `Jesteś asystentem analizującym paragony. Podaj informacje w następującym formacie JSON: 
             {
-              role: 'system',
-              content: `Jesteś asystentem analizującym paragony. Podaj informacje w następującym formacie JSON: 
-              {
-                "DATA": "YYYY-MM-DD", 
-                "SKLEP": "tylko nazwa sklepu czyli jak masz Rossmann SDP SP. Z O.O. to tylko Rossmann ", 
-                "SUMA": "kwota całkowita",
-                "WALUTA": "waluta",
-                "NUMER_PARAGONU": "numer paragonu",
-                "KATEGORIA": "wybrana kategoria",
-                "OPIS": "krótki opis zakupów"
-              }. 
-              Jeśli jakiejś informacji brakuje, użyj "BRAK DANYCH" jako wartość. 
-              Wybierz jedną kategorię z następującej listy: ${RECEIPT_CATEGORIES.join(', ')}.
-              Jeśli nie rozpoznasz zdjęcia lub uznasz że zdjęcie nie jest paragonem, użyj "BRAK DANYCH" jako wartość.`,
-            },
-            {
-              role: 'user',
-              content: [
-                {
-                  type: 'text',
-                  text: 'Przeanalizuj ten paragon, podaj wymagane informacje, wybierz odpowiednią kategorię i napisz krótki opis zakupów.',
-                },
-                { type: 'image_url', image_url: { url: base64String } },
-              ],
-            },
-          ],
-        }),
-      }
-    )
+              "DATA": "YYYY-MM-DD", 
+              "SKLEP": "tylko nazwa sklepu czyli jak masz Rossmann SDP SP. Z O.O. to tylko Rossmann", 
+              "SUMA": "kwota całkowita",
+              "WALUTA": "waluta",
+              "NUMER_PARAGONU": "numer paragonu",
+              "KATEGORIA": "wybrana kategoria",
+              "OPIS": "krótki opis zakupów"
+            }. 
+            Jeśli jakiejś informacji brakuje, użyj "BRAK DANYCH" jako wartość. 
+            Wybierz jedną kategorię z następującej listy: ${RECEIPT_CATEGORIES.join(', ')}.
+            Jeśli nie rozpoznasz zdjęcia lub uznasz że zdjęcie nie jest paragonem, użyj "BRAK DANYCH" jako wartość.`,
+          },
+          {
+            role: 'user',
+            content: `Przeanalizuj ten paragon, podaj wymagane informacje, wybierz odpowiednią kategorię i napisz krótki opis zakupów. [Image URL: ${base64String}]`,
+          },
+        ],
+      }),
+    })
 
     console.log('Received response from GPT-4o API')
 
@@ -72,7 +63,7 @@ export async function analyzeReceipt(base64String: string): Promise<any> {
 
     if (data.choices && data.choices.length > 0) {
       const content = data.choices[0].message.content
-      const jsonMatch = content.match(/```json\n([\s\S]*?)\n```/)
+      const jsonMatch = content.match(/```json\s*([\s\S]*?)\s*```/)
       if (jsonMatch && jsonMatch[1]) {
         try {
           const parsedContent = JSON.parse(jsonMatch[1])
@@ -92,6 +83,7 @@ export async function analyzeReceipt(base64String: string): Promise<any> {
     throw new Error('Error analyzing receipt')
   }
 }
+
 export async function saveAnalyzedReceipt(receiptData: any): Promise<string> {
   try {
     const user = await currentUser()

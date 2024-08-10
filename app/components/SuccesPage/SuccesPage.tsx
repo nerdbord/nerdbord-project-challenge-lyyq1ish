@@ -1,27 +1,17 @@
 'use client'
 import Link from 'next/link'
 import React from 'react'
-import { Logo } from '../Icons/Icons'
+import { SuccesSavedParagone } from '../Icons/Icons'
 
-interface Props {
-  image: string
-}
-
-const SuccesPage = ({ image }: Props) => {
+const SuccesPage = () => {
   return (
     <div className="flex flex-col items-center justify-center gap-8">
       <h3 className="text-center text-4xl">Paragon dodany</h3>
-      {image !== '' ? (
-        <img
-          src={`${image}`}
-          alt="paragon"
-          className="h-[296px] w-[361px] rounded-xl"
-        />
-      ) : (
-        <div className="flex h-[296px] w-[361px] items-center justify-center rounded-xl bg-[#EEEBEB]">
-          <Logo />
-        </div>
-      )}
+
+      <div className="flex h-[296px] w-[361px] items-center justify-center rounded-xl">
+        <SuccesSavedParagone />
+      </div>
+
       <div className="flex w-full flex-col gap-3">
         <Link
           className="w-[100%] rounded-xl bg-[#3F5FE3] py-4 text-center text-white"
