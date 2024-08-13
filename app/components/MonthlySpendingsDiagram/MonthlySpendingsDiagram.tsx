@@ -38,12 +38,12 @@ const RECEIPT_CATEGORIES = [
   { category: 'Kosmetyki', color: '#DB8BF7' },
   { category: 'Dom', color: '#f78b8b' },
   { category: 'Rozrywka', color: '#FF93B5' },
-  { category: 'Jedzenie', color: '#7DBEF2' },
-  { category: 'Zdrowie i leki', color: '#78A8D9' },
+  { category: 'Jedzenie', color: '#F2D17D' },
+  { category: 'Zdrowie i leki', color: '#F29882' },
   { category: 'Transport', color: '#B582F2' },
-  { category: 'Edukacja', color: '#EEEEEE' },
-  { category: 'Hobby', color: '#B9B9B9' },
-  { category: 'Inne', color: '#63B978' },
+  { category: 'Edukacja', color: '#F27459' },
+  { category: 'Hobby', color: '#82F298' },
+  { category: 'Inne', color: '#D4D4D4' },
 ]
 
 const MonthlySpendingsDiagram = () => {
@@ -101,7 +101,7 @@ const MonthlySpendingsDiagram = () => {
     const labels = []
     const data = []
     const backgroundColor = []
-    
+
     for (const cat of RECEIPT_CATEGORIES) {
       if (categoryTotals[cat.category]) {
         labels.push(cat.category)
