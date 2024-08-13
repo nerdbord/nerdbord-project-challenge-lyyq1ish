@@ -95,7 +95,7 @@ const MonthlySpendingsDiagram: React.FC = () => {
           borderWidth: 0,
           borderRadius: 10,
           spacing: 10,
-          hoverBorderColor: ''
+          hoverBorderColor: '',
         },
       ],
     })
@@ -183,22 +183,25 @@ const MonthlySpendingsDiagram: React.FC = () => {
                 (a, b) => parseFloat(b.percentage) - parseFloat(a.percentage)
               )
               .map(({ label, color, percentage, value }) => (
-                <div
-                  key={label}
-                  className="flex items-center justify-between p-2"
-                >
-                  <div className="flex items-center">
-                    <div
-                      className="mr-2 h-4 w-4 rounded-full"
-                      style={{ backgroundColor: color }}
-                    ></div>
-                    <span className="text-lg">{label}</span>
+                <>
+                  <div
+                    key={label}
+                    className="flex items-center justify-between p-2"
+                  >
+                    <div className="flex items-center">
+                      <div
+                        className="mr-2 h-4 w-4 rounded-full"
+                        style={{ backgroundColor: color }}
+                      ></div>
+                      <span className="text-lg">{label}</span>
+                    </div>
+                    <div className="flex w-[50%] items-center justify-between">
+                      <span className="text-lg">{percentage}%</span>
+                      <span className="text-lg">{value} zł</span>
+                    </div>
                   </div>
-                  <div className="flex w-[50%] items-center justify-between">
-                    <span className="text-lg">{percentage}%</span>
-                    <span className="text-lg">{value} zł</span>
-                  </div>
-                </div>
+                  <hr></hr>
+                </>
               ))}
           </div>
         </div>
