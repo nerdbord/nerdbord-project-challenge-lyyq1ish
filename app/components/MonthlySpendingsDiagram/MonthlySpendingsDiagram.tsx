@@ -38,12 +38,12 @@ const RECEIPT_CATEGORIES = [
   { category: 'Kosmetyki', color: '#DB8BF7' },
   { category: 'Dom', color: '#f78b8b' },
   { category: 'Rozrywka', color: '#FF93B5' },
-  { category: 'Jedzenie', color: '#7DBEF2' },
-  { category: 'Zdrowie i leki', color: '#78A8D9' },
+  { category: 'Jedzenie', color: '#F2D17D' },
+  { category: 'Zdrowie i leki', color: '#F29882' },
   { category: 'Transport', color: '#B582F2' },
-  { category: 'Edukacja', color: '#EEEEEE' },
-  { category: 'Hobby', color: '#B9B9B9' },
-  { category: 'Inne', color: '#63B978' },
+  { category: 'Edukacja', color: '#F27459' },
+  { category: 'Hobby', color: '#82F298' },
+  { category: 'Inne', color: '#D4D4D4' },
 ]
 
 const MonthlySpendingsDiagram = () => {
@@ -79,7 +79,8 @@ const MonthlySpendingsDiagram = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const processReceipts = (receipts: any[]) => {
-    const categoryTotals = receipts.reduce((acc, receipt) => {
+  const categoryTotals: { [key: string]: number } = receipts.reduce(
+    (acc, receipt) => {
       const category = receipt.category || 'Inne'
       const amount = parseFloat(receipt.total) || 0
       if (!acc[category]) {
@@ -87,7 +88,9 @@ const MonthlySpendingsDiagram = () => {
       }
       acc[category] += amount
       return acc
-    }, {})
+    },
+    {}
+  )
 
     const total = Object.values(categoryTotals).reduce(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -98,6 +101,7 @@ const MonthlySpendingsDiagram = () => {
     const labels = []
     const data = []
     const backgroundColor = []
+
     for (const cat of RECEIPT_CATEGORIES) {
       if (categoryTotals[cat.category]) {
         labels.push(cat.category)
@@ -114,7 +118,7 @@ const MonthlySpendingsDiagram = () => {
           backgroundColor,
           borderWidth: 0,
           borderRadius: 10,
-          spacing: 5,
+          spacing: 10,
         },
       ],
     })
@@ -164,13 +168,15 @@ const MonthlySpendingsDiagram = () => {
                       },
                       font: {
                         weight: 'bold',
-                        size: 10,
+                        size: 12,
                       },
                       anchor: 'end',
                       align: 'end',
-                      offset: 5, // Space between the segment and the label
-                      borderRadius: 5,
-                      borderWidth: 1,
+                      offset: 8, // Space between the segment and the label
+                      borderRadius: 50,
+                      borderWidth: 0.5,
+                      padding: 3,
+
                       borderColor: (context) => {
                         return Array.isArray(context.dataset.backgroundColor)
                           ? context.dataset.backgroundColor[
@@ -212,8 +218,8 @@ const MonthlySpendingsDiagram = () => {
                 (a: any, b: any) =>
                   parseFloat(b.percentage) - parseFloat(a.percentage)
               )
-              //@ts-ignore
-              .map(({ label, color, percentage, value }, index) => (
+              //@ts-expect-error
+              .map(({ label, color, percentage, value }) => (
                 <div
                   key={label}
                   className="flex items-center justify-between p-2"
