@@ -20,7 +20,12 @@
     "sourceType": "module"
   },
   "plugins": ["react", "@typescript-eslint", "prettier"],
-  "rules": {},
+  "rules": {
+    "prettier/prettier": "error",
+    "@typescript-eslint/no-unused-vars": "error",
+    "react/no-unescaped-entities": "off",
+    "@next/next/no-img-element": "off"
+  },
   "settings": {
     "react": {
       "version": "detect"

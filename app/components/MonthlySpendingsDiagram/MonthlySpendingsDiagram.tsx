@@ -8,28 +8,6 @@ import 'tailwindcss/tailwind.css'
 import { getReceiptsForUser } from '@/app/actions/receiptActions'
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels)
-/*
-#F27459,Pomarańczowy
-#F29882,Jasny pomarańczowy
-#E56B5A,Czerwono-pomarańczowy
-#F2D17D,Żółty
-#F2C563,Cytrynowy
-#F2B549,Złoty
-#82F298,Limonkowy
-#72D687,Jasnozielony
-#63B978,Oliwkowy
-#82B5F2,Jasnoniebieski
-#7DBEF2,Błękitny
-#78A8D9,Szaroniebieski
-#B582F2,Lawendowy
-#A178D9,Liliowy
-#9172C1,Fioletowy
-#EEEEEE,Bardzo jasnoszary
-#D4D4D4,Jasnoszary
-#B9B9B9,Szary
-#9E9E9E,Ciemnoszary
-#848484,Bardzo ciemnoszary
-*/
 
 const RECEIPT_CATEGORIES = [
   { category: 'Spożywcze', color: '#49D1B5' },
@@ -46,16 +24,16 @@ const RECEIPT_CATEGORIES = [
   { category: 'Inne', color: '#D4D4D4' },
 ]
 
-const MonthlySpendingsDiagram = () => {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const [chartData, setChartData] = useState<any>({
-    labels: [],
+const MonthlySpendingsDiagram: React.FC = () => {
+  const [chartData, setChartData] = useState({
+    labels: [] as string[],
     datasets: [
       {
-        data: [],
-        backgroundColor: [],
+        data: [] as number[],
+        backgroundColor: [] as string[],
         borderWidth: 0,
-        borderColor: '#fff',
+        borderRadius: 10,
+        spacing: 10,
         hoverBorderColor: '#fff',
       },
     ],
@@ -77,7 +55,6 @@ const MonthlySpendingsDiagram = () => {
     fetchReceipts()
   }, [])
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const processReceipts = (receipts: any[]) => {
     const categoryTotals: { [key: string]: number } = receipts.reduce(
       (acc, receipt) => {
@@ -89,18 +66,17 @@ const MonthlySpendingsDiagram = () => {
         acc[category] += amount
         return acc
       },
-      {}
+      {} as { [key: string]: number }
     )
 
     const total = Object.values(categoryTotals).reduce(
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (acc: number, amount: any) => acc + amount,
+      (acc, amount) => acc + amount,
       0
     )
 
-    const labels = []
-    const data = []
-    const backgroundColor = []
+    const labels: string[] = []
+    const data: number[] = []
+    const backgroundColor: string[] = []
 
     for (const cat of RECEIPT_CATEGORIES) {
       if (categoryTotals[cat.category]) {
@@ -119,6 +95,7 @@ const MonthlySpendingsDiagram = () => {
           borderWidth: 0,
           borderRadius: 10,
           spacing: 10,
+          hoverBorderColor: ''
         },
       ],
     })
@@ -148,22 +125,12 @@ const MonthlySpendingsDiagram = () => {
                       display: false,
                     },
                     datalabels: {
-                      color: '#000', // Set label text color
+                      color: '#000',
                       formatter: (value, context) => {
                         const percentage = (
                           (value / totalAmount) *
                           100
                         ).toFixed(0)
-                        const label =
-                          context.chart.data.labels?.[context.dataIndex] || ''
-                        const backgroundColor = Array.isArray(
-                          context.dataset.backgroundColor
-                        )
-                          ? context.dataset.backgroundColor[
-                              context.dataIndex
-                            ] || '#000'
-                          : context.dataset.backgroundColor || '#000'
-
                         return `${percentage}%`
                       },
                       font: {
@@ -172,11 +139,10 @@ const MonthlySpendingsDiagram = () => {
                       },
                       anchor: 'end',
                       align: 'end',
-                      offset: 8, // Space between the segment and the label
+                      offset: 8,
                       borderRadius: 50,
                       borderWidth: 0.5,
                       padding: 3,
-
                       borderColor: (context) => {
                         return Array.isArray(context.dataset.backgroundColor)
                           ? context.dataset.backgroundColor[
@@ -188,7 +154,6 @@ const MonthlySpendingsDiagram = () => {
                   },
                   cutout: '90%',
                   responsive: true,
-
                   maintainAspectRatio: false,
                 }}
                 className="h-64"
@@ -215,10 +180,8 @@ const MonthlySpendingsDiagram = () => {
                 value: chartData.datasets[0].data[index].toFixed(2),
               }))
               .sort(
-                (a: any, b: any) =>
-                  parseFloat(b.percentage) - parseFloat(a.percentage)
+                (a, b) => parseFloat(b.percentage) - parseFloat(a.percentage)
               )
-              //@ts-expect-error
               .map(({ label, color, percentage, value }) => (
                 <div
                   key={label}
