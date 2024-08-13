@@ -126,11 +126,12 @@ const MonthlySpendingsDiagram: React.FC = () => {
                     },
                     datalabels: {
                       color: '#000',
-                      formatter: (value, context) => {
+                      formatter: (value) => {
                         const percentage = (
                           (value / totalAmount) *
                           100
                         ).toFixed(0)
+
                         return `${percentage}%`
                       },
                       font: {
