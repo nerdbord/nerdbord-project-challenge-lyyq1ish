@@ -79,18 +79,18 @@ const MonthlySpendingsDiagram = () => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const processReceipts = (receipts: any[]) => {
-  const categoryTotals: { [key: string]: number } = receipts.reduce(
-    (acc, receipt) => {
-      const category = receipt.category || 'Inne'
-      const amount = parseFloat(receipt.total) || 0
-      if (!acc[category]) {
-        acc[category] = 0
-      }
-      acc[category] += amount
-      return acc
-    },
-    {}
-  )
+    const categoryTotals: { [key: string]: number } = receipts.reduce(
+      (acc, receipt) => {
+        const category = receipt.category || 'Inne'
+        const amount = parseFloat(receipt.total) || 0
+        if (!acc[category]) {
+          acc[category] = 0
+        }
+        acc[category] += amount
+        return acc
+      },
+      {}
+    )
 
     const total = Object.values(categoryTotals).reduce(
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
