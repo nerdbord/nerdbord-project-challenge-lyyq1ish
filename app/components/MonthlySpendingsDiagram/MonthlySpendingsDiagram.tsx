@@ -7,8 +7,10 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 import 'tailwindcss/tailwind.css'
 import { getReceiptsForUser } from '@/app/actions/receiptActions'
 
+// Registering the required components for the chart
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels)
 
+// Defining receipt categories with their respective colors
 const RECEIPT_CATEGORIES = [
   { category: 'Spożywcze', color: '#49D1B5' },
   { category: 'Elektronika', color: '#5DB1FA' },
@@ -24,7 +26,9 @@ const RECEIPT_CATEGORIES = [
   { category: 'Inne', color: '#D4D4D4' },
 ]
 
+// Defining the MonthlySpendingsDiagram component
 const MonthlySpendingsDiagram: React.FC = () => {
+  // State variables
   const [chartData, setChartData] = useState({
     labels: [] as string[],
     datasets: [
@@ -41,6 +45,7 @@ const MonthlySpendingsDiagram: React.FC = () => {
   const [totalAmount, setTotalAmount] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(true)
 
+  // Fetching receipts and processing them on component mount
   useEffect(() => {
     const fetchReceipts = async () => {
       try {
@@ -55,6 +60,8 @@ const MonthlySpendingsDiagram: React.FC = () => {
     fetchReceipts()
   }, [])
 
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const processReceipts = (receipts: any[]) => {
     const categoryTotals: { [key: string]: number } = receipts.reduce(
       (acc, receipt) => {
@@ -184,11 +191,8 @@ const MonthlySpendingsDiagram: React.FC = () => {
                 (a, b) => parseFloat(b.percentage) - parseFloat(a.percentage)
               )
               .map(({ label, color, percentage, value }) => (
-                <>
-                  <div
-                    key={label}
-                    className="flex items-center justify-between p-2"
-                  >
+                <React.Fragment key={label}>
+                  <div className="flex items-center justify-between p-2">
                     <div className="flex items-center">
                       <div
                         className="mr-2 h-4 w-4 rounded-full"
@@ -201,8 +205,8 @@ const MonthlySpendingsDiagram: React.FC = () => {
                       <span className="text-lg">{value} zł</span>
                     </div>
                   </div>
-                  <hr></hr>
-                </>
+                  <hr />
+                </React.Fragment>
               ))}
           </div>
         </div>
