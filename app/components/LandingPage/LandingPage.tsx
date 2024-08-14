@@ -8,8 +8,8 @@ const LandingPage = () => {
   return (
     <div className="relative flex max-h-screen flex-col bg-[url(/landingpage.jpeg)] bg-cover">
       <div className="absolute inset-0 left-0 top-0 z-0 h-full w-full bg-[#8E8E8E] opacity-50"></div>
-      <div className="flex h-[50vh]"></div>
-      <div className="z-10 flex flex-col gap-5 p-4">
+
+      <div className="z-10 min-h-screen justify-center flex flex-col gap-5 p-4">
         <div className="mb-4">
           <LogoParagraph />
         </div>

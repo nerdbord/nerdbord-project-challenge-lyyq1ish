@@ -122,14 +122,23 @@ export default function Scanner() {
 
   return (
     <>
+      {!result ? (
+        <TopNavbar backIconHref="nl" position="absolute" />
+      ) : (
+        <TopNavbar
+          backIconHref="dashboard"
+          position="absolute"
+          refresh={true}
+        />
+      )}
+
       <div
-        className={`${poppins.className} max-w-screen relative mx-auto flex min-h-screen flex-col items-center justify-center ${result ? 'bg-[#fff]' : ''}`}
+        className={`${poppins.className} relative mx-auto flex min-h-screen flex-col items-center justify-center p-4 ${result ? 'bg-[#fff]' : ''}`}
       >
         {!showFinalPage ? (
-          <div className="flex flex-col items-center justify-center p-4">
+          <div className="flex flex-col items-center justify-center">
             {!result && (
               <div className="">
-                <TopNavbar backIconHref="nl" position="absolute" />
                 <h1 className="mb-4 mt-16 text-left text-[22px] text-[#383838]">
                   Zrób zdjęcie swojego paragonu.
                 </h1>
@@ -219,11 +228,6 @@ export default function Scanner() {
                   </h3>
                 )}
                 <div>
-                  <TopNavbar
-                    backIconHref="dashboard"
-                    position="absolute"
-                    refresh={true}
-                  />
                   <div className="mt-10 flex max-w-[364px] flex-col gap-3">
                     <div className="relative flex justify-between">
                       <div className="flex w-[48%] flex-col">

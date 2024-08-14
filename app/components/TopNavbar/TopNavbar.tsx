@@ -11,7 +11,7 @@ interface Props {
 const TopNavbar = ({ backIconHref, position, refresh = false }: Props) => {
   return (
     <div
-      className={`z-10 flex w-full max-w-[400px] items-center justify-between p-4 ${position} top-7`}
+      className={`z-10 flex w-full max-w-[393px] items-center justify-between p-4 ${position} top-6`}
     >
       <div className="ml-5">
         {backIconHref.length > 3 && (
@@ -28,7 +28,7 @@ const TopNavbar = ({ backIconHref, position, refresh = false }: Props) => {
           </Link>
         )}
       </div>
-      <div className="mr-10">
+      <div className="mr-5">
         <Link href={'/homepage'}>
           <XIcon />
         </Link>
