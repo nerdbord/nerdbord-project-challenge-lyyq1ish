@@ -122,15 +122,11 @@ export default function Scanner() {
 
   return (
     <>
-      {!result ? (
+      {(!result && !showFinalPage) && (
         <TopNavbar backIconHref="nl" position="absolute" />
-      ) : (
-        <TopNavbar
-          backIconHref="dashboard"
-          position="absolute"
-          refresh={true}
-        />
       )}
+
+      {(!showFinalPage && result) && <TopNavbar backIconHref="dashboard" position="absolute" refresh={true} />}
 
       <div
         className={`${poppins.className} relative mx-auto flex min-h-screen flex-col items-center justify-center p-4 ${result ? 'bg-[#fff]' : ''}`}
