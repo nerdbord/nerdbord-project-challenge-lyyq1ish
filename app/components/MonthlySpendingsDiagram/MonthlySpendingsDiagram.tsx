@@ -7,28 +7,24 @@ import ChartDataLabels from 'chartjs-plugin-datalabels'
 import 'tailwindcss/tailwind.css'
 import { getReceiptsForUser } from '@/app/actions/receiptActions'
 
-// Registering the required components for the chart
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels)
 
-// Defining receipt categories with their respective colors
 const RECEIPT_CATEGORIES = [
-  { category: 'Spożywcze', color: '#49D1B5' },
-  { category: 'Elektronika', color: '#5DB1FA' },
-  { category: 'Odzież', color: '#8B96F7' },
-  { category: 'Kosmetyki', color: '#DB8BF7' },
-  { category: 'Dom', color: '#f78b8b' },
-  { category: 'Rozrywka', color: '#FF93B5' },
-  { category: 'Jedzenie', color: '#F2D17D' },
-  { category: 'Zdrowie i leki', color: '#F29882' },
-  { category: 'Transport', color: '#B582F2' },
-  { category: 'Edukacja', color: '#F27459' },
-  { category: 'Hobby', color: '#82F298' },
-  { category: 'Inne', color: '#D4D4D4' },
+  { category: 'Spożywcze', color: '#FF6B6B' }, // Changed to a vibrant red
+  { category: 'Elektronika', color: '#4D96FF' }, // Changed to a brighter blue
+  { category: 'Odzież', color: '#9B72AA' }, // Changed to a more muted purple
+  { category: 'Kosmetyki', color: '#FF85B3' }, // Changed to a brighter pink
+  { category: 'Dom', color: '#FFB347' }, // Changed to a warmer orange
+  { category: 'Rozrywka', color: '#FFB3BA' }, // Changed to a soft pink
+  { category: 'Jedzenie', color: '#FFD700' }, // Changed to a rich gold
+  { category: 'Zdrowie i leki', color: '#FF7F50' }, // Changed to a coral color
+  { category: 'Transport', color: '#9370DB' }, // Changed to a medium purple
+  { category: 'Edukacja', color: '#87CEEB' }, // Changed to a sky blue
+  { category: 'Hobby', color: '#7CFC00' }, // Changed to a vivid green
+  { category: 'Inne', color: '#D4A017' },
 ]
 
-// Defining the MonthlySpendingsDiagram component
 const MonthlySpendingsDiagram: React.FC = () => {
-  // State variables
   const [chartData, setChartData] = useState({
     labels: [] as string[],
     datasets: [
@@ -45,7 +41,6 @@ const MonthlySpendingsDiagram: React.FC = () => {
   const [totalAmount, setTotalAmount] = useState<number>(0)
   const [loading, setLoading] = useState<boolean>(true)
 
-  // Fetching receipts and processing them on component mount
   useEffect(() => {
     const fetchReceipts = async () => {
       try {
@@ -59,7 +54,6 @@ const MonthlySpendingsDiagram: React.FC = () => {
     }
     fetchReceipts()
   }, [])
-
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const processReceipts = (receipts: any[]) => {
@@ -119,9 +113,8 @@ const MonthlySpendingsDiagram: React.FC = () => {
           style={{
             boxShadow: '0px 4px 12.3px 0px rgba(0, 0, 0, 0.25)',
           }}
-          className="m-4 rounded-xl bg-[#FFF] p-2"
+          className="m-4 rounded-xl bg-[#FFF] p-4"
         >
-          <h3 className="mb-12 p-2 text-center text-2xl">Miesięczne wydatki</h3>
           {chartData.labels.length > 0 ? (
             <div className="relative">
               <Doughnut
@@ -130,9 +123,10 @@ const MonthlySpendingsDiagram: React.FC = () => {
                   plugins: {
                     legend: {
                       display: false,
+                      align: 'center',
                     },
                     datalabels: {
-                      color: '#000',
+                      color: '#333',
                       formatter: (value) => {
                         const percentage = (
                           (value / totalAmount) *
@@ -141,13 +135,15 @@ const MonthlySpendingsDiagram: React.FC = () => {
 
                         return `${percentage}%`
                       },
+
                       font: {
                         weight: 'bold',
                         size: 12,
                       },
                       anchor: 'end',
                       align: 'end',
-                      offset: 8,
+                      opacity: 0,
+                      offset: 0,
                       borderRadius: 50,
                       borderWidth: 0.5,
                       padding: 3,

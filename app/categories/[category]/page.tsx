@@ -88,22 +88,27 @@ const CategoryReceipts = () => {
   return (
     <div className="p-2">
       <TopNavbar backIconHref="categories" position="block" />
-      <div className="m-4 rounded-xl bg-[#EEEBEB] py-4">
+      <div
+        style={{
+          boxShadow: '0px 4px 12.3px 0px rgba(0, 0, 0, 0.25)',
+        }}
+        className="m-4 rounded-xl bg-[#fff] py-4"
+      >
         <div
-          className={`mb-1 flex items-center justify-around ${poppins.className}`}
+          className={`mb-6 flex items-center justify-around ${poppins.className}`}
         >
-          <h4 className="mb-4 text-[20px]">Paragony z kategorii: {category}</h4>
+          <h4 className="text-[20px]">Paragony z kategorii: {category}</h4>
         </div>
         {loading ? (
           <div className="py-4 text-center">Ładowanie...</div>
         ) : receipts.length === 0 ? (
           <div className="py-4 text-center">Brak paragonów do wyświetlenia</div>
         ) : (
-          <ul className="space-y-4">
-            {receipts.map((receipt) => (
+          <ul className="">
+            {receipts.map((receipt, index) => (
               <li
                 key={receipt.id}
-                className="cursor-pointer rounded border p-4 hover:bg-gray-100"
+                className="cursor-pointer"
                 onClick={() => handleReceiptClick(receipt.id)}
               >
                 <div className="flex w-full items-center gap-6 p-4">
@@ -119,10 +124,6 @@ const CategoryReceipts = () => {
                       <div className="flex flex-col text-[12px]">
                         <p>{receipt.shop}</p>
                         <p>{receipt.date}</p>
-                        <div className="my-1">
-                          <p>Numer paragonu:</p>
-                          <p>{receipt.receiptNumber}</p>
-                        </div>
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
@@ -131,6 +132,9 @@ const CategoryReceipts = () => {
                     </div>
                   </div>
                 </div>
+                {index < receipts.length - 1 && (
+                  <hr className="h-[2px] w-full bg-[#DBDBDB]" />
+                )}
               </li>
             ))}
           </ul>

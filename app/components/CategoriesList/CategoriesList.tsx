@@ -19,7 +19,7 @@ import {
   faQuestion,
 } from '@fortawesome/free-solid-svg-icons'
 import { EmptyReceiptStateIcon } from '../Icons/LargerImages'
-import { BlackLogoParagraph } from '../Icons/Icons'
+import { BlackLogoParagraph, FrontArrow } from '../Icons/Icons'
 import Link from 'next/link'
 import Loader from '../Loader/Loader'
 
@@ -97,20 +97,32 @@ const CategoriesList = () => {
   }
 
   return (
-    <div className="mx-auto max-w-2xl p-4">
-      <h1 className="mb-4 text-center text-2xl font-bold">Kategorie</h1>
-      <ul className="flex flex-col justify-center gap-3 space-y-2">
-        {categories.map(({ category, icon }) => (
-          <li
-            key={category}
-            className="flex cursor-pointer items-center space-x-3 rounded-xl bg-[#EEEBEB] p-3 text-lg"
-            onClick={() => handleCategoryClick(category)}
-          >
-            <FontAwesomeIcon icon={icon} />
-            <span>{category}</span>
-          </li>
-        ))}
-      </ul>
+    <div className='p-2'>
+      <div
+        style={{
+          boxShadow: '0px 4px 12.3px 0px rgba(0, 0, 0, 0.25)',
+        }}
+        className="m-4 rounded-xl bg-[#fff] p-4"
+      >
+        <h1 className="mb-4 text-center text-2xl font-bold">Kategorie</h1>
+        <ul className="flex flex-col justify-center gap-3 space-y-2">
+          {categories.map(({ category, icon }) => (
+            <li
+              key={category}
+              className="flex w-full cursor-pointer items-center justify-between space-x-3 rounded-xl bg-[#F6F5FA] p-3 text-lg"
+              onClick={() => handleCategoryClick(category)}
+            >
+              <div className="flex items-center space-x-3">
+                <FontAwesomeIcon icon={icon} />
+                <span className="font-semibold">{category}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <FrontArrow />
+              </div>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   )
 }
